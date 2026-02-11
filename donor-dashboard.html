@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donor Dashboard | FairFund</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: #f8fafb; color: #334155; padding-top: 80px; }
+    .navbar { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.08); z-index: 1000; padding: 0 2rem; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+    .navbar-brand { display: flex; align-items: center; text-decoration: none; }
+    .navbar-logo { width: 40px; height: 40px; background: linear-gradient(135deg,#5eead4 0%, #2dd4bf 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: .75rem; box-shadow: 0 4px 12px rgba(45,212,191,.3); }
+    .navbar-logo-text { font-size: 1.1rem; font-weight: 700; color: #fff; }
+    .navbar-brand-name { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+    .navbar-nav { display: flex; align-items: center; gap: 2rem; list-style: none; }
+    .nav-link { text-decoration: none; color: #64748b; font-weight: 500; font-size: .875rem; position: relative; }
+    .nav-link:hover, .nav-link.active { color: #0d9488; }
+    .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background: linear-gradient(135deg,#0d9488 0%,#0f766e 100%); border-radius: 1px; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .header { margin-bottom: 1.5rem; }
+    .title { font-size: 2rem; font-weight: 700; color: #0f172a; }
+    .subtitle { color: #64748b; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .stat { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; }
+    .stat-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: .75rem; }
+    .stat-icon { width: 48px; height: 48px; background: linear-gradient(135deg,#f0fdfa 0%,#ccfbf1 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: #0d9488; }
+    .stat-value { font-size: 1.75rem; font-weight: 700; color: #0f172a; }
+    .stat-label { font-size: .875rem; color: #64748b; }
+    .grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+    .card { background: white; border-radius: 16px; padding: 1.5rem; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; }
+    .section-title { font-size: 1.25rem; font-weight: 600; color: #0f172a; margin-bottom: 1rem; }
+    .list { display: flex; flex-direction: column; gap: .75rem; }
+    .row { display: grid; grid-template-columns: 1.4fr .8fr .6fr auto; gap: 1rem; align-items: center; border: 1px solid #e5e7eb; border-radius: 12px; padding: .75rem; }
+    .ngo { font-weight: 600; color: #0f172a; }
+    .muted { color: #64748b; font-size: .875rem; }
+    .amount { font-weight: 700; color: #0f172a; }
+    .btn { background: linear-gradient(135deg,#0d9488 0%,#0f766e 100%); color: #fff; border: none; padding: .5rem .9rem; border-radius: 10px; font-weight: 600; cursor: pointer; }
+    .btn-secondary { background: #fff; color: #0d9488; border: 1px solid #0d9488; }
+    .actions { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+    .action { text-align: center; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; cursor: pointer; transition: .2s; }
+    .action:hover { background: #f8fafb; border-color: #0d9488; }
+    .recs { display: grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap: 1rem; }
+    .rec { border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; }
+    .progress { height: 10px; background: #e5e7eb; border-radius: 6px; overflow: hidden; margin: .5rem 0; }
+    .fill { height: 100%; background: linear-gradient(135deg,#0d9488 0%,#0f766e 100%); }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } .row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="navbar-logo"><div class="navbar-logo-text">FF</div></div>
+      <span class="navbar-brand-name">FairFund</span>
+    </a>
+    <ul class="navbar-nav">
+      <li><a href="donor-dashboard.html" class="nav-link active">Dashboard</a></li>
+      <li><a href="donor-explore.html" class="nav-link">Explore</a></li>
+      <li><a href="donor-my-donations.html" class="nav-link">My Donations</a></li>
+      <li><a href="about.html" class="nav-link">About</a></li>
+    </ul>
+    <div></div>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <div class="title" id="welcome">Welcome back</div>
+      <div class="subtitle">Your impact at a glance, built on proofs — not promises</div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="section-title">Recent Donations</div>
+        <div class="list" id="recent"></div>
+        <div style="margin-top: 1rem; display:flex; gap:.75rem">
+          <a class="btn" href="donor-my-donations.html">View All</a>
+          <a class="btn btn-secondary" href="qr-verification.html">Scan/Verify QR</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="section-title">Quick Actions</div>
+        <div class="actions">
+          <div class="action" onclick="location.href='donor-explore.html'">
+            <div class="stat-icon" style="margin:0 auto">🔎</div>
+            <div style="margin-top:.5rem;font-weight:600;color:#0f172a">Explore Campaigns</div>
+            <div class="muted">Discover verified NGOs</div>
+          </div>
+          <div class="action" onclick="location.href='donor-my-donations.html'">
+            <div class="stat-icon" style="margin:0 auto">🧾</div>
+            <div style="margin-top:.5rem;font-weight:600;color:#0f172a">My Donations</div>
+            <div class="muted">Review proof trails</div>
+          </div>
+          <div class="action" onclick="location.href='qr-verification.html'">
+            <div class="stat-icon" style="margin:0 auto">📱</div>
+            <div style="margin-top:.5rem;font-weight:600;color:#0f172a">Verify via QR</div>
+            <div class="muted">Public, read-only verification</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:1.5rem">
+      <div class="section-title">Recommended Campaigns</div>
+      <div class="recs" id="recs"></div>
+    </div>
+  </div>
+
+  <script>
+    const donations = [
+      {id:'d_1001',ngo:'Education For All Foundation',campaign:'Education for All 2024',amount:5000,date:'2026-02-01T10:20:00',status:'verified',hash:'0x9f8e7d...6c5b4a'},
+      {id:'d_1002',ngo:'Community Health Trust',campaign:'Healthcare Initiative',amount:25000,date:'2026-01-25T17:45:00',status:'pending',hash:'0x3a2b1c...4d5e6f'},
+      {id:'d_1003',ngo:'WomenRise Org',campaign:'Women Empowerment',amount:10000,date:'2026-01-10T09:05:00',status:'verified',hash:'0x8f7e6d...5c4b3a'}
+    ];
+    const recs = [
+      {id:'education-2024',icon:'📚',name:'Education for All 2024',desc:'Quality education for 500 children',raised:8.5,goal:10},
+      {id:'healthcare-2024',icon:'🏥',name:'Healthcare Initiative',desc:'Community health camps',raised:12,goal:15},
+      {id:'women-empowerment',icon:'👩‍💼',name:'Women Empowerment',desc:'Skill training & micro-grants',raised:4,goal:8}
+    ];
+
+    const user = JSON.parse(localStorage.getItem('fairfundUser')||'{}');
+    const welcome = document.getElementById('welcome');
+    if (user && user.name) welcome.textContent = `Welcome back, ${user.name.split(' ')[0]}`;
+
+    const stats = document.getElementById('stats');
+    const total = donations.reduce((s,d)=>s+d.amount,0);
+    const verified = donations.filter(d=>d.status==='verified').length;
+    const supported = new Set(donations.map(d=>d.campaign)).size;
+    const viewed = Math.max(verified-1, 0);
+    const statCards = [
+      {icon:'💝',label:'Total Donated',value:`₹${total.toLocaleString()}`},
+      {icon:'✅',label:'Donations Verified',value:verified},
+      {icon:'🎯',label:'Campaigns Supported',value:supported},
+      {icon:'🔍',label:'Proofs Viewed',value:viewed}
+    ];
+    statCards.forEach(s=>{
+      const card = document.createElement('div');
+      card.className='stat';
+      card.innerHTML = `
+        <div class='stat-top'>
+          <div class='stat-icon'>${s.icon}</div>
+          <div class='stat-label'>${s.label}</div>
+        </div>
+        <div class='stat-value'>${s.value}</div>
+      `;
+      stats.appendChild(card);
+    });
+
+    const recent = document.getElementById('recent');
+    donations.slice(0,5).forEach(d=>{
+      const row = document.createElement('div');
+      row.className='row';
+      const date = new Date(d.date);
+      row.innerHTML = `
+        <div>
+          <div class='ngo'>${d.ngo}</div>
+          <div class='muted'>${d.campaign}</div>
+        </div>
+        <div class='muted'>${date.toLocaleDateString()} • ${date.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})}</div>
+        <div class='amount'>₹${d.amount.toLocaleString()}</div>
+        <div><button class='btn' data-id='${d.id}'>View</button></div>
+      `;
+      row.querySelector('.btn').addEventListener('click', function(){
+        location.href = `donor-donation-detail.html?id=${d.id}`;
+      });
+      recent.appendChild(row);
+    });
+
+    const recsEl = document.getElementById('recs');
+    recs.forEach(c=>{
+      const pct = Math.round((c.raised/c.goal)*100);
+      const card = document.createElement('div');
+      card.className='rec';
+      card.innerHTML = `
+        <div style='display:flex;align-items:center;gap:.75rem;'>
+          <div style='width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e0f2fe 0%,#bae6fd 100%);display:flex;align-items:center;justify-content:center;font-size:1.2rem;'>${c.icon}</div>
+          <div>
+            <div style='font-weight:600;color:#0f172a'>${c.name}</div>
+            <div class='muted'>${c.desc}</div>
+          </div>
+        </div>
+        <div class='progress'><div class='fill' style='width:${pct}%'></div></div>
+        <div style='display:flex;justify-content:space-between' class='muted'>
+          <span>₹${c.raised}L of ₹${c.goal}L</span><span>${pct}%</span>
+        </div>
+        <div style='margin-top:.5rem;display:flex;gap:.5rem'>
+          <a class='btn' href='donor-campaign-detail.html?id=${c.id}'>View</a>
+          <a class='btn btn-secondary' href='donation-payment.html?campaign=${c.id}'>Donate</a>
+        </div>
+      `;
+      card.addEventListener('click', function(e){ if(e.target.tagName.toLowerCase()==='a') return; location.href = `donor-campaign-detail.html?id=${c.id}`; });
+      recsEl.appendChild(card);
+    });
+  </script>
+</body>
+</html>
+

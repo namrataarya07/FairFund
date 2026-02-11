@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings | FairFund Auditor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#f8f6f0 0%,#f5f3ed 100%);color:#374151}
+    .nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(13,148,136,.1);z-index:100}
+    .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:1rem}
+    .brand{font-weight:700;color:#0d9488;text-decoration:none}
+    .links{display:flex;gap:1.5rem;list-style:none}
+    .link{color:#6b7280;text-decoration:none;font-weight:500}
+    .link:hover,.link.active{color:#0d9488}
+    .container{max-width:900px;margin:0 auto;padding:2rem 1rem}
+    .title{font-size:2rem;font-weight:700;color:#1f2937;margin-bottom:.5rem}
+    .subtitle{color:#6b7280}
+    .section{background:#fff;border-radius:16px;padding:1.5rem;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1px solid #e5e7eb;margin-top:1rem}
+    .section-title{font-size:1.25rem;font-weight:600;color:#0f172a;margin-bottom:1rem}
+    .row{display:flex;align-items:center;justify-content:space-between;padding:.75rem 0;border-bottom:1px solid #f1f5f9}
+    .row:last-child{border-bottom:none}
+    .label{color:#374151;font-weight:500}
+    .desc{color:#6b7280;font-size:.875rem}
+    .toggle{position:relative;width:48px;height:26px;background:#e5e7eb;border-radius:13px;cursor:pointer}
+    .knob{position:absolute;top:3px;left:3px;width:20px;height:20px;background:#fff;border-radius:50%;transition:.2s}
+    .toggle.active{background:#0d9488}
+    .toggle.active .knob{transform:translateX(22px)}
+    .select{padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px;background:#fff}
+    .input{padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:8px}
+    .btn{padding:.6rem 1rem;border-radius:10px;border:none;font-weight:600;cursor:pointer}
+    .btn-primary{background:linear-gradient(135deg,#0d9488,#0f766e);color:#fff}
+  </style>
+</head>
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">FairFund</a>
+      <ul class="links">
+        <li><a class="link" href="auditor-dashboard.html">Dashboard</a></li>
+        <li><a class="link" href="auditor-my-reviews.html">My Reviews</a></li>
+        <li><a class="link" href="auditor-reports.html">Reports</a></li>
+        <li><a class="link active" href="auditor-settings.html">Settings</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="title">Settings</div>
+    <div class="subtitle">Preferences for notifications and linked NGOs</div>
+
+    <div class="section">
+      <div class="section-title">Notifications</div>
+      <div class="row">
+        <div>
+          <div class="label">Email Alerts</div>
+          <div class="desc">Receive updates when proofs are assigned to you</div>
+        </div>
+        <div class="toggle" id="notifEmail"><div class="knob"></div></div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="label">SMS Alerts</div>
+          <div class="desc">Urgent notifications for pending reviews</div>
+        </div>
+        <div class="toggle" id="notifSms"><div class="knob"></div></div>
+      </div>
+      <div class="row">
+        <div>
+          <div class="label">Weekly Summary</div>
+          <div class="desc">Digest of approvals, rejections, and accuracy</div>
+        </div>
+        <div class="toggle" id="notifWeekly"><div class="knob"></div></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Linked NGOs</div>
+      <div class="row">
+        <div>
+          <div class="label">Add NGO Code</div>
+          <div class="desc">Link yourself to an NGO for reviews</div>
+        </div>
+        <div style="display:flex;gap:.5rem">
+          <input id="ngoCode" class="input" placeholder="Enter NGO code">
+          <button class="btn btn-primary" id="linkNgo">Link</button>
+        </div>
+      </div>
+      <div id="linkedList"></div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">Preferences</div>
+      <div class="row">
+        <div>
+          <div class="label">Language</div>
+          <div class="desc">Interface language</div>
+        </div>
+        <select id="lang" class="select"><option value="en">English</option><option value="hi">Hindi</option></select>
+      </div>
+      <div class="row">
+        <div>
+          <div class="label">Timezone</div>
+          <div class="desc">Display times in your local timezone</div>
+        </div>
+        <select id="tz" class="select"><option value="IST">IST</option><option value="UTC">UTC</option></select>
+      </div>
+      <div style="margin-top:1rem">
+        <button class="btn btn-primary" id="save">Save Settings</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    function toggle(el){el.classList.toggle('active');}
+    document.getElementById('notifEmail').addEventListener('click',function(){toggle(this);});
+    document.getElementById('notifSms').addEventListener('click',function(){toggle(this);});
+    document.getElementById('notifWeekly').addEventListener('click',function(){toggle(this);});
+    const linked=JSON.parse(localStorage.getItem('auditorLinkedNgos')||'[]');
+    const linkedList=document.getElementById('linkedList');
+    function renderLinked(){linkedList.innerHTML='';linked.forEach(code=>{const row=document.createElement('div');row.className='row';row.innerHTML=`<div class='label'>NGO ${code}</div><button class='btn' data-code='${code}'>Unlink</button>`;row.querySelector('button').addEventListener('click',function(){const c=this.dataset.code;const i=linked.indexOf(c);if(i>-1){linked.splice(i,1);localStorage.setItem('auditorLinkedNgos',JSON.stringify(linked));renderLinked();}});linkedList.appendChild(row);});}
+    renderLinked();
+    document.getElementById('linkNgo').addEventListener('click',function(){const code=document.getElementById('ngoCode').value.trim();if(code){linked.push(code);localStorage.setItem('auditorLinkedNgos',JSON.stringify(linked));document.getElementById('ngoCode').value='';renderLinked();}});
+    document.getElementById('save').addEventListener('click',function(){const prefs={email:document.getElementById('notifEmail').classList.contains('active'),sms:document.getElementById('notifSms').classList.contains('active'),weekly:document.getElementById('notifWeekly').classList.contains('active'),lang:document.getElementById('lang').value,tz:document.getElementById('tz').value};localStorage.setItem('auditorPrefs',JSON.stringify(prefs));});
+    const saved=JSON.parse(localStorage.getItem('auditorPrefs')||'{}');
+    if(saved.email)document.getElementById('notifEmail').classList.add('active');
+    if(saved.sms)document.getElementById('notifSms').classList.add('active');
+    if(saved.weekly)document.getElementById('notifWeekly').classList.add('active');
+    if(saved.lang)document.getElementById('lang').value=saved.lang;
+    if(saved.tz)document.getElementById('tz').value=saved.tz;
+  </script>
+</body>
+</html>
+

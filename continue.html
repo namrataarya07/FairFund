@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FairFund - Continue As</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafb 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+            padding: 2rem;
+        }
+        
+        .container {
+            text-align: center;
+            max-width: 1000px;
+            width: 100%;
+        }
+        
+        .header {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 15px 30px rgba(45, 212, 191, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: white;
+            z-index: 1;
+        }
+        
+        .brand-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .subtitle {
+            font-size: 1.125rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .role-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .role-card:nth-child(1) {
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .role-card:nth-child(2) {
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+
+        
+        .role-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.6s ease;
+        }
+        
+        .role-card:hover::before {
+            left: 100%;
+        }
+        
+        .role-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+            border-color: rgba(45, 212, 191, 0.3);
+        }
+        
+        .role-card.selected {
+            border-color: #0d9488;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            transform: translateY(-4px);
+        }
+        
+        .role-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #0c4a6e;
+            transition: all 0.3s ease;
+        }
+        
+        .role-card:hover .role-icon {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .role-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+        }
+        
+        .role-description {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .role-features {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            color: #475569;
+        }
+        
+        .feature-item::before {
+            content: '✓';
+            color: #0d9488;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .select-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #d1d5db;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+        
+        .role-card.selected .select-indicator {
+            background: #0d9488;
+            border-color: #0d9488;
+        }
+        
+        .role-card.selected .select-indicator::after {
+            content: '✓';
+            color: white;
+            font-size: 14px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .continue-button {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            box-shadow: 0 4px 20px rgba(13, 148, 136, 0.3);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+        
+        .continue-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(13, 148, 136, 0.4);
+        }
+        
+        .continue-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #64748b;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.3s ease;
+        }
+        
+        .back-link:hover {
+            color: #0d9488;
+        }
+        
+        .selection-info {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .role-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .role-card {
+                padding: 2rem;
+            }
+            
+            .brand-name {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <div class="logo-text">FF</div>
+            </div>
+            <h1 class="brand-name">FairFund</h1>
+            <p class="subtitle">Continue as...</p>
+        </div>
+        
+        <div class="selection-info">
+            Choose your role to get started with FairFund's transparent donation platform
+        </div>
+        
+        <div class="role-grid">
+            <div class="role-card" data-role="ngo">
+                <div class="select-indicator"></div>
+                <div class="role-icon">🏢</div>
+                <h3 class="role-title">NGO</h3>
+                <p class="role-description">Register your organization and showcase your transparency to donors worldwide.</p>
+                <div class="role-features">
+                    <div class="feature-item">Create verified donation campaigns</div>
+                    <div class="feature-item">Track and report fund usage</div>
+                    <div class="feature-item">Build donor trust with transparency</div>
+                    <div class="feature-item">Access donor analytics</div>
+                </div>
+            </div>
+            
+            <div class="role-card" data-role="donor">
+                <div class="select-indicator"></div>
+                <div class="role-icon">💝</div>
+                <h3 class="role-title">Donor</h3>
+                <p class="role-description">Donate with confidence knowing exactly where your money goes and how it's used.</p>
+                <div class="role-features">
+                    <div class="feature-item">Track every rupee donated</div>
+                    <div class="feature-item">Verify fund utilization</div>
+                    <div class="feature-item">Discover trusted NGOs</div>
+                    <div class="feature-item">Get impact reports</div>
+                </div>
+            </div>
+            
+
+        </div>
+        
+        <button class="continue-button" id="continueBtn" disabled>Continue</button>
+        
+        <a href="index.html" class="back-link">← Back to Home</a>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleCards = document.querySelectorAll('.role-card');
+            const continueBtn = document.getElementById('continueBtn');
+            const selectionInfo = document.querySelector('.selection-info');
+            const roleRoutes = {
+                ngo: 'login.html?role=ngo',
+                donor: 'login.html?role=donor'
+            };
+            let selectedRole = null;
+            
+            // Role selection functionality
+            
+            roleCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Remove previous selection
+                    roleCards.forEach(c => {
+                        c.classList.remove('selected');
+                        c.style.transform = '';
+                    });
+                    
+                    // Add selection to clicked card
+                    this.classList.add('selected');
+                    selectedRole = this.dataset.role;
+                    
+                    // Enable continue button
+                    continueBtn.disabled = false;
+                    selectionInfo.textContent = `Selected: ${selectedRole.toUpperCase()} — press Continue to proceed`;
+                    
+                    // Add selection animation
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                    
+                    // Add ripple effect
+                    const ripple = document.createElement('div');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(13, 148, 136, 0.3)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.left = '50%';
+                    ripple.style.top = '50%';
+                    ripple.style.width = '20px';
+                    ripple.style.height = '20px';
+                    ripple.style.marginLeft = '-10px';
+                    ripple.style.marginTop = '-10px';
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+                
+                // Add hover effects
+                card.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = 'translateY(-4px)';
+                        this.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.12)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('selected')) {
+                        this.style.transform = '';
+                        this.style.boxShadow = '';
+                    }
+                });
+            });
+            
+            // Continue button functionality
+            continueBtn.addEventListener('click', function() {
+                if (selectedRole) {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                        const target = roleRoutes[selectedRole];
+                        if (target) {
+                            window.location.href = target;
+                        }
+                    }, 150);
+                }
+            });
+            
+            // Add ripple animation CSS
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes ripple {
+                    to {
+                        transform: scale(4);
+                        opacity: 0;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && selectedRole && !continueBtn.disabled) {
+                    continueBtn.click();
+                }
+                
+                if (e.key >= '1' && e.key <= '2') {
+                    const index = parseInt(e.key) - 1;
+                    if (roleCards[index]) {
+                        roleCards[index].click();
+                    }
+                }
+            });
+            
+            // Add touch feedback for mobile
+            roleCards.forEach(card => {
+                card.addEventListener('touchstart', function() {
+                    this.style.transform = 'scale(0.98)';
+                });
+                
+                card.addEventListener('touchend', function() {
+                    this.style.transform = '';
+                    if (this.classList.contains('selected')) {
+                        const target = roleRoutes[this.dataset.role];
+                        if (target) window.location.href = target;
+                    }
+                });
+
+                // Optional: double-click to navigate immediately
+                card.addEventListener('dblclick', function() {
+                    const target = roleRoutes[this.dataset.role];
+                    if (target) window.location.href = target;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

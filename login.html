@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FairFund - Login | Built on Proofs, Not Promises</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafb;
+            min-height: 100vh;
+            display: flex;
+            color: #334155;
+            overflow-x: hidden;
+        }
+        
+        .split-container {
+            display: flex;
+            width: 100%;
+            min-height: 100vh;
+        }
+        
+        .left-panel {
+            flex: 1;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+        }
+        
+        .right-panel {
+            flex: 1;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .right-panel::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(45, 212, 191, 0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .login-form-container {
+            width: 100%;
+            max-width: 400px;
+            z-index: 1;
+        }
+        
+        .illustration-container {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            z-index: 1;
+            animation: fadeInRight 1s ease-out;
+        }
+        
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 20px rgba(45, 212, 191, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            z-index: 1;
+        }
+        
+        .brand-name {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tagline {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 400;
+        }
+        
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .form-subtitle {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+        
+        .role-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+        
+        .role-option {
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .role-option:hover {
+            border-color: #0d9488;
+            background: #f0fdfa;
+        }
+        
+        .role-option.selected {
+            border-color: #0d9488;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+        }
+        
+        .role-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .role-name {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            padding: 0.875rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .submit-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+        
+        .submit-button:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e7eb;
+        }
+        
+        .divider-text {
+            background: white;
+            padding: 0 1rem;
+            position: relative;
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .social-login {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .social-button {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        
+        .social-button:hover {
+            border-color: #0d9488;
+            background: #f0fdfa;
+        }
+        
+        .illustration {
+            width: 100%;
+            max-width: 300px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(45, 212, 191, 0.1) 0%, rgba(13, 148, 136, 0.1) 100%);
+            border-radius: 16px;
+            margin: 0 auto 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .illustration::before {
+            content: '🔍';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            opacity: 0.6;
+        }
+        
+        .illustration-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+        
+        .illustration-text {
+            font-size: 1rem;
+            color: #64748b;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-list {
+            text-align: left;
+        }
+        
+        .feature-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            color: #374151;
+        }
+        
+        .feature-item::before {
+            content: '✓';
+            color: #0d9488;
+            font-weight: bold;
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .signup-link {
+            text-align: center;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .signup-link a {
+            color: #0d9488;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 768px) {
+            .split-container {
+                flex-direction: column;
+            }
+            
+            .left-panel,
+            .right-panel {
+                padding: 2rem 1.5rem;
+                min-height: 50vh;
+            }
+            
+            .role-selection {
+                grid-template-columns: 1fr;
+            }
+            
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="split-container">
+        <div class="left-panel">
+            <div class="illustration-container">
+                <div class="illustration"></div>
+                <h2 class="illustration-title">Transparent Donations</h2>
+                <p class="illustration-text">Every rupee donated can be traced, verified, and proven. Built on blockchain-backed proof, not promises.</p>
+                <div class="feature-list">
+                    <div class="feature-item">Immutable donation records</div>
+                    <div class="feature-item">Real-time fund tracking</div>
+                    <div class="feature-item">Independent verification</div>
+                    <div class="feature-item">No crypto speculation</div>
+                </div>
+            </div>
+        </div>
+        <div class="right-panel">
+            <div class="login-form-container">
+                <div class="logo-section">
+                    <div class="logo"><div class="logo-text">FF</div></div>
+                    <h1 class="brand-name">FairFund</h1>
+                    <p class="tagline">Built on Proofs, Not Promises</p>
+                </div>
+                <form id="loginForm">
+                    <h2 class="form-title" id="formTitle">Welcome Back</h2>
+                    <p class="form-subtitle" id="formSubtitle">Sign in to continue your transparent journey</p>
+                    <div class="role-selection">
+                        <div class="role-option" data-role="ngo"><div class="role-icon">🏢</div><div class="role-name">NGO</div></div>
+                        <div class="role-option" data-role="donor"><div class="role-icon">💝</div><div class="role-name">Donor</div></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="name" id="nameLabel">Full Name</label>
+                        <input type="text" id="name" class="form-input" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">Email Address</label>
+                        <input type="email" id="email" class="form-input" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="Enter your phone" pattern="[0-9]{10}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="submit-button" id="submitBtn" disabled>Continue</button>
+                    <div class="divider"><span class="divider-text">or continue with</span></div>
+                    <div class="social-login">
+                        <button type="button" class="social-button" id="loginGoogle">Google</button>
+                        <button type="button" class="social-button" id="loginPhone">Phone OTP</button>
+                    </div>
+                </form>
+                <div class="signup-link">Don't have an account? <a href="#" id="showSignup">Sign up</a></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const roleOptions = document.querySelectorAll('.role-option');
+            const submitBtn = document.getElementById('submitBtn');
+            const loginForm = document.getElementById('loginForm');
+            const emailInput = document.getElementById('email');
+            const passwordInput = document.getElementById('password');
+            const nameInput = document.getElementById('name');
+            const phoneInput = document.getElementById('phone');
+            const nameLabel = document.getElementById('nameLabel');
+            const formTitle = document.getElementById('formTitle');
+            const formSubtitle = document.getElementById('formSubtitle');
+            const urlRole = new URLSearchParams(window.location.search).get('role');
+            let selectedRole = null;
+            function updateRole(role) {
+                roleOptions.forEach(opt => opt.classList.remove('selected'));
+                const opt = Array.from(roleOptions).find(o => o.dataset.role === role) || roleOptions[0];
+                opt.classList.add('selected');
+                selectedRole = opt.dataset.role;
+                if (selectedRole === 'ngo') {
+                    nameLabel.textContent = 'NGO Name';
+                    formTitle.textContent = 'Sign in as NGO';
+                    formSubtitle.textContent = 'Manage campaigns, proofs, and withdrawals';
+                } else if (selectedRole === 'donor') {
+                    nameLabel.textContent = 'Full Name';
+                    formTitle.textContent = 'Sign in as Donor';
+                    formSubtitle.textContent = 'Track your impact and verify proofs';
+                }
+                checkFormValidity();
+            }
+            roleOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    updateRole(this.dataset.role);
+                    const ripple = document.createElement('div');
+                    ripple.style.position = 'absolute';
+                    ripple.style.borderRadius = '50%';
+                    ripple.style.background = 'rgba(13, 148, 136, 0.3)';
+                    ripple.style.transform = 'scale(0)';
+                    ripple.style.animation = 'ripple 0.6s linear';
+                    ripple.style.left = '50%';
+                    ripple.style.top = '50%';
+                    ripple.style.width = '20px';
+                    ripple.style.height = '20px';
+                    ripple.style.marginLeft = '-10px';
+                    ripple.style.marginTop = '-10px';
+                    ripple.style.pointerEvents = 'none';
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+            function checkFormValidity() {
+                const baseValid = emailInput.value && passwordInput.value && nameInput.value && phoneInput.value && selectedRole;
+                submitBtn.disabled = !baseValid;
+            }
+            emailInput.addEventListener('input', checkFormValidity);
+            passwordInput.addEventListener('input', checkFormValidity);
+            nameInput.addEventListener('input', checkFormValidity);
+            phoneInput.addEventListener('input', checkFormValidity);
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                submitBtn.innerHTML = 'Signing in...';
+                submitBtn.disabled = true;
+                setTimeout(() => {
+                    localStorage.setItem('fairfundRole', selectedRole);
+                    localStorage.setItem('fairfundUser', JSON.stringify({
+                        email: emailInput.value,
+                        phone: phoneInput.value,
+                        name: nameInput.value,
+                        role: selectedRole
+                    }));
+                    const redirectMap = {
+                        ngo: 'ngo-dashboard.html',
+                        donor: 'donor-explore.html'
+                    };
+                    window.location.href = redirectMap[selectedRole] || 'index.html';
+                }, 1200);
+            });
+            const style = document.createElement('style');
+            style.textContent = `@keyframes ripple { to { transform: scale(4); opacity: 0; } } .role-option { position: relative; overflow: hidden; }`;
+            document.head.appendChild(style);
+            document.addEventListener('keydown', function(e) {
+                if (e.key >= '1' && e.key <= '2') {
+                    const index = parseInt(e.key) - 1;
+                    if (roleOptions[index]) roleOptions[index].click();
+                }
+                if (e.key === 'Enter' && !submitBtn.disabled) loginForm.dispatchEvent(new Event('submit'));
+            });
+            if (urlRole) {
+                updateRole(urlRole);
+            } else {
+                updateRole('ngo');
+            }
+            document.getElementById('loginGoogle').addEventListener('click', function() {
+                alert('Google sign-in is mocked in this prototype.');
+            });
+            document.getElementById('loginPhone').addEventListener('click', function() {
+                alert('Phone OTP is mocked in this prototype.');
+            });
+        });
+    </script>
+</body>
+</html>

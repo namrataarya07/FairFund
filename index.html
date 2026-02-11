@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FairFund - Built on Proofs, Not Promises</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8fafb 0%, #f1f5f9 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #334155;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 800px;
+            width: 100%;
+        }
+        
+        .logo-section {
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2rem;
+            box-shadow: 0 20px 40px rgba(45, 212, 191, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s infinite;
+        }
+        
+        .logo-text {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            z-index: 1;
+        }
+        
+        .brand-name {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+        
+        .tagline {
+            font-size: 1.25rem;
+            color: #64748b;
+            font-weight: 400;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0d9488;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        .description {
+            font-size: 1.125rem;
+            line-height: 1.7;
+            color: #475569;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+            box-shadow: 0 4px 20px rgba(13, 148, 136, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(13, 148, 136, 0.4);
+        }
+        
+        .proof-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 1s both;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes shimmer {
+            0% {
+                transform: translateX(-100%) translateY(-100%) rotate(45deg);
+            }
+            100% {
+                transform: translateX(100%) translateY(100%) rotate(45deg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+            }
+            
+            .brand-name {
+                font-size: 2.5rem;
+            }
+            
+            .tagline {
+                font-size: 1.125rem;
+            }
+            
+            .stats-section {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .stat-card {
+                padding: 1.5rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="logo">
+                <div class="logo-text">FF</div>
+            </div>
+            <h1 class="brand-name">FairFund</h1>
+            <p class="tagline">Built on Proofs, Not Promises</p>
+        </div>
+        
+        <div class="proof-badge">
+            🔒 Blockchain Verified Transparency
+        </div>
+        
+        <div class="description">
+            FairFund is a transparency layer for donations where every rupee donated can be traced, verified, and proven. We solve the trust gap between donors and NGOs by making donation records and fund usage publicly verifiable using blockchain-backed proof — without using crypto speculation or NFTs.
+        </div>
+        
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number">40L+</div>
+                <div class="stat-label">Donors Trusted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100+</div>
+                <div class="stat-label">NGOs Registered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">95%</div>
+                <div class="stat-label">Scam Detection Rate</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Fund Usage Transparency</div>
+            </div>
+        </div>
+        
+        <a href="continue.html" class="cta-button">Let's Get Started</a>
+    </div>
+    
+    <script>
+        // Add smooth scroll behavior and enhanced interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate stats on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                observer.observe(card);
+            });
+            
+            // Add click animation to CTA button
+            const ctaButton = document.querySelector('.cta-button');
+            ctaButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Add ripple effect
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                    window.location.href = this.href;
+                }, 150);
+            });
+            
+            // Add hover effects to stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.background = 'linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.background = 'white';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

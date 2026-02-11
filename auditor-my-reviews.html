@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Reviews | FairFund Auditor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#f8f6f0 0%,#f5f3ed 100%);color:#374151}
+    .nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(13,148,136,.1);z-index:100}
+    .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:1rem}
+    .brand{font-weight:700;color:#0d9488;text-decoration:none}
+    .links{display:flex;gap:1.5rem;list-style:none}
+    .link{color:#6b7280;text-decoration:none;font-weight:500}
+    .link:hover,.link.active{color:#0d9488}
+    .container{max-width:1200px;margin:0 auto;padding:2rem 1rem}
+    .title{font-size:2rem;font-weight:700;color:#1f2937;margin-bottom:.5rem}
+    .subtitle{color:#6b7280}
+    .tabs{display:flex;gap:1rem;margin:1.5rem 0;border-bottom:2px solid #e5e7eb}
+    .tab{padding:1rem 1.25rem;border:none;background:none;color:#6b7280;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-2px;cursor:pointer}
+    .tab.active{color:#0d9488;border-bottom-color:#0d9488}
+    .filters{display:flex;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+    .input{padding:.75rem 1rem;border:2px solid #e5e7eb;border-radius:8px}
+    .select{padding:.75rem 1rem;border:2px solid #e5e7eb;border-radius:8px;background:#fff}
+    .list{display:flex;flex-direction:column;gap:1rem}
+    .card{background:#fff;border-radius:16px;padding:1rem;box-shadow:0 4px 20px rgba(0,0,0,.08);border:1px solid #e5e7eb}
+    .row{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:.5rem}
+    .name{font-weight:600;color:#1f2937}
+    .meta{display:flex;gap:.75rem;color:#6b7280;font-size:.875rem}
+    .status{padding:.25rem .5rem;border-radius:16px;font-size:.75rem;font-weight:600}
+    .status-pending{background:rgba(251,191,36,.1);color:#d97706}
+    .status-approved{background:rgba(34,197,94,.1);color:#16a34a}
+    .status-rejected{background:rgba(239,68,68,.1);color:#dc2626}
+    .actions{display:flex;gap:.5rem;flex-wrap:wrap}
+    .btn{padding:.5rem .9rem;border-radius:8px;border:none;font-weight:600;cursor:pointer}
+    .btn-approve{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+    .btn-reject{background:linear-gradient(135deg,#ef4444,#dc2626);color:#fff}
+    .btn-request{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff}
+    .btn-view{background:linear-gradient(135deg,#0d9488,#14b8a6);color:#fff}
+    @media(max-width:768px){.row{flex-direction:column}}
+  </style>
+  </head>
+<body>
+  <div class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">FairFund</a>
+      <ul class="links">
+        <li><a class="link" href="auditor-dashboard.html">Dashboard</a></li>
+        <li><a class="link active" href="auditor-my-reviews.html">My Reviews</a></li>
+        <li><a class="link" href="auditor-reports.html">Reports</a></li>
+        <li><a class="link" href="auditor-settings.html">Settings</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container">
+    <div class="title">My Reviews</div>
+    <div class="subtitle">Manage and track all proofs you have reviewed</div>
+    <div class="tabs">
+      <button class="tab active" data-tab="pending">Pending</button>
+      <button class="tab" data-tab="approved">Approved</button>
+      <button class="tab" data-tab="rejected">Rejected</button>
+      <button class="tab" data-tab="all">All</button>
+    </div>
+    <div class="filters">
+      <input id="q" class="input" placeholder="Search NGO or campaign">
+      <select id="tier" class="select"><option value="">All tiers</option><option value="gold">Gold</option><option value="silver">Silver</option><option value="bronze">Bronze</option></select>
+    </div>
+    <div id="list" class="list"></div>
+  </div>
+  <script>
+    const reviews=[
+      {id:'r1',name:'Equipment Purchase Receipt',ngo:'Education Foundation',tier:'gold',date:'2026-02-10 09:20',status:'pending'},
+      {id:'r2',name:'Computer Lab Setup Photos',ngo:'Education Foundation',tier:'gold',date:'2026-02-09 18:05',status:'approved'},
+      {id:'r3',name:'Medical Equipment Invoice',ngo:'HealthCare NGO',tier:'silver',date:'2026-02-08 14:30',status:'pending'},
+      {id:'r4',name:'Tree Plantation Report',ngo:'Green Earth Foundation',tier:'bronze',date:'2026-02-07 12:00',status:'rejected'}
+    ];
+    let current='pending';
+    const list=document.getElementById('list');
+    const q=document.getElementById('q');
+    const tier=document.getElementById('tier');
+    function render(){
+      list.innerHTML='';
+      const term=(q.value||'').toLowerCase();
+      const t=tier.value;
+      reviews.filter(r=> (current==='all'||r.status===current) && (!t||r.tier===t) && (r.name.toLowerCase().includes(term)||r.ngo.toLowerCase().includes(term))).forEach(r=>{
+        const card=document.createElement('div');
+        card.className='card';
+        card.innerHTML=`
+          <div class='row'>
+            <div>
+              <div class='name'>${r.name}</div>
+              <div class='meta'>
+                <span>🏢 ${r.ngo}</span>
+                <span>•</span>
+                <span>${r.tier.charAt(0).toUpperCase()+r.tier.slice(1)} Tier</span>
+                <span>•</span>
+                <span>📅 ${r.date}</span>
+              </div>
+            </div>
+            <span class='status ${r.status==='pending'?'status-pending':r.status==='approved'?'status-approved':'status-rejected'}'>${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span>
+          </div>
+          <div class='actions'>
+            <button class='btn btn-view' data-id='${r.id}'>View</button>
+            <button class='btn btn-approve' data-id='${r.id}'>Approve</button>
+            <button class='btn btn-reject' data-id='${r.id}'>Reject</button>
+            <button class='btn btn-request' data-id='${r.id}'>Request Info</button>
+          </div>
+        `;
+        card.querySelector('.btn-view').addEventListener('click',()=>alert('Opening review details'));
+        card.querySelector('.btn-approve').addEventListener('click',()=>update(r.id,'approved'));
+        card.querySelector('.btn-reject').addEventListener('click',()=>update(r.id,'rejected'));
+        card.querySelector('.btn-request').addEventListener('click',()=>alert('Info request sent'));
+        list.appendChild(card);
+      });
+    }
+    function update(id,status){
+      const i=reviews.findIndex(x=>x.id===id);
+      if(i>-1){reviews[i].status=status;render();}
+    }
+    document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));this.classList.add('active');current=this.dataset.tab;render();}));
+    q.addEventListener('input',render);tier.addEventListener('change',render);render();
+  </script>
+</body>
+</html>
+

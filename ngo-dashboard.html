@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NGO Dashboard - FairFund</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafb;
+            color: #334155;
+            padding-top: 80px; /* Space for fixed navbar */
+        }
+        
+        /* Global Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+        }
+        
+        .navbar-logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .navbar-brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #0d9488;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 1px;
+        }
+        
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .settings-dropdown, .profile-dropdown {
+            position: relative;
+        }
+        
+        .settings-toggle, .profile-toggle {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+        
+        .settings-toggle:hover, .profile-toggle:hover {
+            background: #f1f5f9;
+            color: #0d9488;
+        }
+        
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        /* Main Dashboard Content */
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .dashboard-header {
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .dashboard-subtitle {
+            font-size: 1rem;
+            color: #64748b;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #0d9488;
+        }
+        
+        .stat-trend {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .trend-up {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .trend-down {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+        
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Campaigns Section */
+        .campaigns-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        
+        .create-campaign-btn {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .create-campaign-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+        
+        .campaign-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .campaign-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .campaign-item:hover {
+            border-color: #0d9488;
+            background: #f8fafb;
+        }
+        
+        .campaign-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        
+        .campaign-info {
+            flex: 1;
+        }
+        
+        .campaign-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .campaign-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+            display: inline-block;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-completed {
+            background: #e0f2fe;
+            color: #0c4a6e;
+        }
+        
+        .campaign-progress {
+            text-align: right;
+        }
+        
+        .progress-amount {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .progress-text {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        /* Verification Status */
+        .verification-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+        
+        .verification-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 2rem;
+        }
+        
+        .verification-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: #166534;
+            margin-bottom: 1rem;
+        }
+        
+        .verification-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+        
+        .verification-text {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.5;
+        }
+        
+        /* Risk Meter */
+        .risk-meter {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f8fafb;
+            border-radius: 12px;
+        }
+        
+        .risk-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .risk-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        
+        .risk-level {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .risk-low {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .risk-medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .risk-high {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+        
+        .risk-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+        
+        .risk-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        .risk-fill.low {
+            width: 25%;
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        }
+        
+        .risk-fill.medium {
+            width: 50%;
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .risk-fill.high {
+            width: 75%;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+        
+        .risk-text {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-align: center;
+        }
+        
+        /* NGO Tier Badge */
+        .tier-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+        
+        .tier-gold {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 1px solid rgba(251, 191, 36, 0.2);
+        }
+        
+        .tier-silver {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #374151;
+            border: 1px solid rgba(156, 163, 175, 0.2);
+        }
+        
+        .tier-bronze {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            color: #9a3412;
+            border: 1px solid rgba(251, 146, 60, 0.2);
+        }
+        
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .action-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .action-card:hover {
+            border-color: #0d9488;
+            background: #f8fafb;
+        }
+        
+        .action-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.5rem;
+            color: #0d9488;
+        }
+        
+        .action-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.25rem;
+        }
+        
+        .action-description {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .navbar-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="navbar-logo">
+                <div class="navbar-logo-text">FF</div>
+            </div>
+            <span class="navbar-brand-name">FairFund</span>
+        </a>
+        
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="ngo-dashboard.html" class="nav-link active">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a href="ngo-profile.html" class="nav-link">Profile</a>
+            </li>
+            <li class="nav-item">
+                <a href="ngo-campaigns.html" class="nav-link">Campaigns</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+        </ul>
+        
+        <div class="navbar-actions">
+            <div class="profile-dropdown">
+                <button class="profile-toggle" id="profileToggle">
+                    <div class="profile-avatar" id="profileAvatar">N</div>
+                    <span class="profile-name" id="profileName">NGO User</span>
+                    <span>▼</span>
+                </button>
+                <div class="profile-menu" id="profileMenu" style="display: none;">
+                    <a href="ngo-profile.html" class="profile-menu-item">Profile Settings</a>
+                    <a href="account.html" class="profile-menu-item">Account Settings</a>
+                    <a href="help.html" class="profile-menu-item">Help & Support</a>
+                    <a href="index.html" class="profile-menu-item">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Dashboard Content -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">NGO Dashboard</h1>
+            <p class="dashboard-subtitle">Track your campaigns, donations, and transparency metrics</p>
+        </div>
+        
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">💝</div>
+                    <div class="stat-trend trend-up">+12%</div>
+                </div>
+                <div class="stat-value">₹24.5L</div>
+                <div class="stat-label">Total Funds Raised</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-trend trend-up">+8%</div>
+                </div>
+                <div class="stat-value">12</div>
+                <div class="stat-label">Active Campaigns</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-trend trend-down">-3%</div>
+                </div>
+                <div class="stat-value">₹18.2L</div>
+                <div class="stat-label">Funds Withdrawn</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">📊</div>
+                    <div class="stat-trend trend-up">+15%</div>
+                </div>
+                <div class="stat-value">94%</div>
+                <div class="stat-label">Transparency Score</div>
+            </div>
+        </div>
+        
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Campaigns Section -->
+            <div class="campaigns-section">
+                <div class="section-header">
+                    <h2 class="section-title">Active Campaigns</h2>
+                    <button class="create-campaign-btn" onclick="createNewCampaign()">+ Create Campaign</button>
+                </div>
+                
+                <div class="campaign-list">
+                    <div class="campaign-item" onclick="viewCampaign('education-2024')">
+                        <div class="campaign-icon">📚</div>
+                        <div class="campaign-info">
+                            <div class="campaign-title">Education for All 2024</div>
+                            <span class="campaign-status status-active">Active</span>
+                        </div>
+                        <div class="campaign-progress">
+                            <div class="progress-amount">₹8.5L</div>
+                            <div class="progress-text">of ₹10L goal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-item" onclick="viewCampaign('healthcare-2024')">
+                        <div class="campaign-icon">🏥</div>
+                        <div class="campaign-info">
+                            <div class="campaign-title">Healthcare Initiative</div>
+                            <span class="campaign-status status-active">Active</span>
+                        </div>
+                        <div class="campaign-progress">
+                            <div class="progress-amount">₹12L</div>
+                            <div class="progress-text">of ₹15L goal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="campaign-item" onclick="viewCampaign('women-empowerment')">
+                        <div class="campaign-icon">👩‍💼</div>
+                        <div class="campaign-info">
+                            <div class="campaign-title">Women Empowerment</div>
+                            <span class="campaign-status status-pending">Pending Review</span>
+                        </div>
+                        <div class="campaign-progress">
+                            <div class="progress-amount">₹4L</div>
+                            <div class="progress-text">of ₹8L goal</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <div class="action-card" onclick="uploadProof()">
+                        <div class="action-icon">📤</div>
+                        <div class="action-title">Upload Proof</div>
+                        <div class="action-description">Submit expense receipts</div>
+                    </div>
+                    
+                    <div class="action-card" onclick="requestWithdrawal()">
+                        <div class="action-icon">💸</div>
+                        <div class="action-title">Request Withdrawal</div>
+                        <div class="action-description">Withdraw verified funds</div>
+                    </div>
+                    
+                    <div class="action-card" onclick="viewReports()">
+                        <div class="action-icon">📈</div>
+                        <div class="action-title">View Reports</div>
+                        <div class="action-description">Transparency analytics</div>
+                    </div>
+                    
+                    <div class="action-card" onclick="manageAuditors()">
+                        <div class="action-icon">👥</div>
+                        <div class="action-title">Manage Auditors</div>
+                        <div class="action-description">Linked auditors</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Verification & Risk Section -->
+            <div class="verification-section">
+                <div class="verification-badge">
+                    <div class="verification-icon">✅</div>
+                    <div class="verification-title">Verified NGO</div>
+                    <div class="verification-text">
+                        Your organization has been verified by FairFund. 
+                        You can now create campaigns and receive donations.
+                    </div>
+                </div>
+                
+                <!-- NGO Tier Badge -->
+                <div class="tier-badge tier-gold">
+                    <span>🏆</span>
+                    <span>Gold Tier NGO</span>
+                </div>
+                
+                <!-- Risk Meter -->
+                <div class="risk-meter">
+                    <div class="risk-header">
+                        <div class="risk-title">Risk Assessment</div>
+                        <div class="risk-level risk-low">Low Risk</div>
+                    </div>
+                    <div class="risk-bar">
+                        <div class="risk-fill low"></div>
+                    </div>
+                    <div class="risk-text">
+                        Based on transparency score and audit history
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('fairfundUser') || '{}');
+            const userRole = localStorage.getItem('fairfundRole') || 'ngo';
+            
+            // Update profile
+            const profileAvatar = document.getElementById('profileAvatar');
+            const profileName = document.getElementById('profileName');
+            
+            if (userData.email) {
+                profileName.textContent = userData.email.split('@')[0];
+                profileAvatar.textContent = userRole.charAt(0).toUpperCase();
+            }
+            
+            // Profile dropdown toggle
+            const profileToggle = document.getElementById('profileToggle');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            profileToggle.addEventListener('click', function() {
+                profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.profile-dropdown')) {
+                    profileMenu.style.display = 'none';
+                }
+            });
+            
+            // Animate stats on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe stat cards
+            document.querySelectorAll('.stat-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+        
+        // Navigation functions
+        function createNewCampaign() {
+            alert('Redirecting to campaign creation form...');
+            // window.location.href = 'create-campaign.html';
+        }
+        
+        function viewCampaign(campaignId) {
+            alert(`Viewing campaign: ${campaignId}`);
+            // window.location.href = `campaign-detail.html?id=${campaignId}`;
+        }
+        
+        function uploadProof() {
+            alert('Opening proof upload interface...');
+            // window.location.href = 'upload-proof.html';
+        }
+        
+        function requestWithdrawal() {
+            alert('Opening withdrawal request form...');
+            // window.location.href = 'request-withdrawal.html';
+        }
+        
+        function viewReports() {
+            alert('Opening transparency reports...');
+            // window.location.href = 'reports.html';
+        }
+        
+        function manageAuditors() {
+            alert('Opening auditor management...');
+            // window.location.href = 'manage-auditors.html';
+        }
+    </script>
+</body>
+</html>

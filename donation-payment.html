@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Donation - FairFund</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8f6f0 0%, #f5f3ed 100%);
+            color: #374151;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #6b7280;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0d9488;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 0;
+        }
+
+        /* Progress Steps */
+        .progress-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 3rem;
+            gap: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .step.active {
+            color: #0d9488;
+        }
+
+        .step.completed {
+            color: #22c55e;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .step.active .step-number {
+            background: #0d9488;
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: #22c55e;
+            color: white;
+        }
+
+        .step-connector {
+            width: 60px;
+            height: 2px;
+            background: #e5e7eb;
+            margin: 0 0.5rem;
+        }
+
+        .step-connector.active {
+            background: #0d9488;
+        }
+
+        /* Payment Container */
+        .payment-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Order Summary */
+        .order-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            height: fit-content;
+        }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .campaign-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .campaign-info h3 {
+            color: #1f2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .campaign-info p {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .donation-details {
+            background: rgba(13, 148, 136, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .donation-amount {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .amount-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .amount-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d9488;
+        }
+
+        .donation-message {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .donation-message textarea {
+            width: 100%;
+            border: none;
+            outline: none;
+            resize: vertical;
+            min-height: 80px;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+
+        .donation-message textarea::placeholder {
+            color: #9ca3af;
+        }
+
+        /* Payment Form */
+        .payment-form {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .payment-method {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .payment-method:hover {
+            border-color: #0d9488;
+            transform: translateY(-2px);
+        }
+
+        .payment-method.active {
+            border-color: #0d9488;
+            background: rgba(13, 148, 136, 0.05);
+        }
+
+        .payment-method-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #6b7280;
+        }
+
+        .payment-method.active .payment-method-icon {
+            color: #0d9488;
+        }
+
+        .payment-method-name {
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        /* Form Groups */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #0d9488;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        /* Secure Payment Badge */
+        .secure-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .secure-badge i {
+            font-size: 1.2rem;
+        }
+
+        /* Anonymous Donation */
+        .anonymous-option {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(13, 148, 136, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(13, 148, 136, 0.1);
+        }
+
+        .anonymous-option input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0d9488;
+        }
+
+        .anonymous-option label {
+            color: #374151;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Terms */
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #0d9488;
+            margin-top: 0.25rem;
+        }
+
+        .terms-checkbox label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .terms-checkbox a {
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .loading-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #f3f4f6;
+            border-top: 4px solid #0d9488;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Success Message */
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Error Message */
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .payment-container {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .payment-methods {
+                flex-direction: column;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .step-connector {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">FairFund</a>
+                <ul class="nav-links">
+                    <li><a href="donor-explore.html">Explore</a></li>
+                    <li><a href="#">My Donations</a></li>
+                    <li><a href="#">Impact</a></li>
+                    <li><a href="#">About</a></li>
+                </ul>
+                <div class="user-menu">
+                    <div class="user-avatar">JD</div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Progress Steps -->
+            <div class="progress-steps fade-in-up">
+                <div class="step completed">
+                    <div class="step-number">✓</div>
+                    <span>Amount</span>
+                </div>
+                <div class="step-connector active"></div>
+                <div class="step active">
+                    <div class="step-number">2</div>
+                    <span>Payment</span>
+                </div>
+                <div class="step-connector"></div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <span>Confirmation</span>
+                </div>
+            </div>
+
+            <!-- Payment Container -->
+            <div class="payment-container">
+                <!-- Order Summary -->
+                <div class="order-summary fade-in-up">
+                    <div class="summary-header">
+                        <div class="campaign-image">EF</div>
+                        <div class="campaign-info">
+                            <h3>Education for All: Digital Learning Initiative</h3>
+                            <p>By Education Foundation • Gold Tier NGO</p>
+                        </div>
+                    </div>
+
+                    <div class="donation-details">
+                        <div class="donation-amount">
+                            <span class="amount-label">Donation Amount</span>
+                            <span class="amount-value">₹2,500</span>
+                        </div>
+                        <div class="donation-amount">
+                            <span class="amount-label">Processing Fee (2%)</span>
+                            <span class="amount-value">₹50</span>
+                        </div>
+                        <div class="donation-amount" style="border-top: 1px solid #e5e7eb; padding-top: 1rem; margin-top: 1rem;">
+                            <span class="amount-label" style="font-weight: 600; color: #1f2937;">Total Amount</span>
+                            <span class="amount-value" style="font-size: 1.75rem;">₹2,550</span>
+                        </div>
+                    </div>
+
+                    <div class="donation-message">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 500; color: #374151;">
+                            Leave a message (optional)
+                        </label>
+                        <textarea placeholder="Share why you're supporting this cause..."></textarea>
+                    </div>
+
+                    <div style="background: rgba(13, 148, 136, 0.05); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                        <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+                            <i class="fas fa-info-circle" style="color: #0d9488; margin-right: 0.5rem;"></i>
+                            100% of your donation goes to the NGO. Processing fees are separate.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Payment Form -->
+                <div class="payment-form fade-in-up">
+                    <h2 class="form-title">Complete Your Donation</h2>
+
+                    <div class="secure-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Your payment information is secure and encrypted</span>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div class="payment-methods">
+                        <div class="payment-method active" onclick="selectPaymentMethod('card')">
+                            <div class="payment-method-icon">💳</div>
+                            <div class="payment-method-name">Credit/Debit Card</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                            <div class="payment-method-icon">📱</div>
+                            <div class="payment-method-name">UPI</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                            <div class="payment-method-icon">🏦</div>
+                            <div class="payment-method-name">Net Banking</div>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('wallet')">
+                            <div class="payment-method-icon">👛</div>
+                            <div class="payment-method-name">Wallet</div>
+                        </div>
+                    </div>
+
+                    <!-- Card Payment Form -->
+                    <div id="cardForm" class="payment-form-content">
+                        <div class="form-group">
+                            <label class="form-label">Card Number</label>
+                            <input type="text" class="form-input" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Expiry Date</label>
+                                <input type="text" class="form-input" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">CVV</label>
+                                <input type="text" class="form-input" placeholder="123" maxlength="3" oninput="this.value = this.value.replace(/\D/g, '')">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Name on Card</label>
+                            <input type="text" class="form-input" placeholder="John Doe">
+                        </div>
+                    </div>
+
+                    <!-- UPI Form -->
+                    <div id="upiForm" class="payment-form-content" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">UPI ID</label>
+                            <input type="text" class="form-input" placeholder="username@upi" oninput="validateUPI(this)">
+                        </div>
+                        <div style="background: rgba(13, 148, 136, 0.05); border-radius: 8px; padding: 1rem; margin-top: 1rem;">
+                            <p style="color: #6b7280; font-size: 0.9rem; margin: 0;">
+                                <i class="fas fa-lightbulb" style="color: #0d9488; margin-right: 0.5rem;"></i>
+                                You'll receive a payment request on your UPI app.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Net Banking Form -->
+                    <div id="netbankingForm" class="payment-form-content" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Select Bank</label>
+                            <select class="form-input">
+                                <option value="">Choose your bank</option>
+                                <option value="sbi">State Bank of India</option>
+                                <option value="hdfc">HDFC Bank</option>
+                                <option value="icici">ICICI Bank</option>
+                                <option value="axis">Axis Bank</option>
+                                <option value="pnb">Punjab National Bank</option>
+                                <option value="kotak">Kotak Mahindra Bank</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Wallet Form -->
+                    <div id="walletForm" class="payment-form-content" style="display: none;">
+                        <div class="form-group">
+                            <label class="form-label">Select Wallet</label>
+                            <select class="form-input">
+                                <option value="">Choose wallet</option>
+                                <option value="paytm">Paytm</option>
+                                <option value="phonepe">PhonePe</option>
+                                <option value="mobikwik">Mobikwik</option>
+                                <option value="amazon">Amazon Pay</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" placeholder="john@example.com" value="john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Phone Number</label>
+                        <input type="tel" class="form-input" placeholder="+91 98765 43210" value="+91 98765 43210">
+                    </div>
+
+                    <!-- Anonymous Donation -->
+                    <div class="anonymous-option">
+                        <input type="checkbox" id="anonymous" onchange="toggleAnonymous()">
+                        <label for="anonymous">Make this an anonymous donation</label>
+                    </div>
+
+                    <!-- Success/Error Messages -->
+                    <div id="successMessage" class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Payment successful! Redirecting to confirmation page...</span>
+                    </div>
+
+                    <div id="errorMessage" class="error-message">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span id="errorText">Payment failed. Please try again.</span>
+                    </div>
+
+                    <!-- Terms and Conditions -->
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms" required>
+                        <label for="terms">
+                            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>. 
+                            I understand that my donation is non-refundable and will be used for the specified campaign.
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="button" class="submit-btn" onclick="processPayment()" id="payButton">
+                        <span id="payButtonText">Donate ₹2,550 Now</span>
+                    </button>
+
+                    <!-- Payment Security Info -->
+                    <div style="text-align: center; color: #6b7280; font-size: 0.9rem;">
+                        <i class="fas fa-shield-alt" style="color: #0d9488; margin-right: 0.5rem;"></i>
+                        Secured by Razorpay • SSL Encrypted
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h3 style="margin-bottom: 0.5rem; color: #1f2937;">Processing Payment</h3>
+            <p style="color: #6b7280;">Please wait while we secure your donation...</p>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let selectedPaymentMethod = 'card';
+        let razorpayInstance = null;
+
+        // Format card number
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s/g, '').replace(/\D/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            input.value = formattedValue;
+        }
+
+        // Format expiry date
+        function formatExpiry(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            input.value = value;
+        }
+
+        // Validate UPI ID
+        function validateUPI(input) {
+            const upiRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+$/;
+            if (input.value && !upiRegex.test(input.value)) {
+                input.style.borderColor = '#ef4444';
+            } else {
+                input.style.borderColor = '#e5e7eb';
+            }
+        }
+
+        // Select payment method
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            event.target.closest('.payment-method').classList.add('active');
+            
+            // Show/hide forms
+            document.querySelectorAll('.payment-form-content').forEach(el => el.style.display = 'none');
+            document.getElementById(method + 'Form').style.display = 'block';
+        }
+
+        // Toggle anonymous donation
+        function toggleAnonymous() {
+            const isAnonymous = document.getElementById('anonymous').checked;
+            const nameFields = document.querySelectorAll('.form-input[placeholder*="name"], .form-input[placeholder*="Name"]');
+            
+            nameFields.forEach(field => {
+                if (isAnonymous) {
+                    field.value = 'Anonymous Donor';
+                    field.disabled = true;
+                } else {
+                    field.value = '';
+                    field.disabled = false;
+                }
+            });
+        }
+
+        // Process payment
+        function processPayment() {
+            // Validate form
+            if (!validateForm()) {
+                return;
+            }
+
+            // Show loading
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                initializeRazorpay();
+            }, 2000);
+        }
+
+        // Validate form
+        function validateForm() {
+            const termsAccepted = document.getElementById('terms').checked;
+            const email = document.querySelector('input[type="email"]').value;
+            const phone = document.querySelector('input[type="tel"]').value;
+
+            if (!termsAccepted) {
+                showError('Please accept the terms and conditions');
+                return false;
+            }
+
+            if (!email || !phone) {
+                showError('Please fill in all required fields');
+                return false;
+            }
+
+            // Validate payment method specific fields
+            if (selectedPaymentMethod === 'card') {
+                const cardNumber = document.querySelector('input[placeholder*="1234"]').value;
+                const expiry = document.querySelector('input[placeholder*="MM/YY"]').value;
+                const cvv = document.querySelector('input[placeholder*="123"]').value;
+                
+                if (!cardNumber || !expiry || !cvv) {
+                    showError('Please fill in all card details');
+                    return false;
+                }
+            } else if (selectedPaymentMethod === 'upi') {
+                const upiId = document.querySelector('input[placeholder*="@upi"]').value;
+                if (!upiId) {
+                    showError('Please enter your UPI ID');
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        // Initialize Razorpay
+        function initializeRazorpay() {
+            const options = {
+                key: 'rzp_test_1234567890', // Test key - replace with actual key
+                amount: 255000, // Amount in paise (₹2550)
+                currency: 'INR',
+                name: 'FairFund',
+                description: 'Donation to Education for All Campaign',
+                image: 'https://fairfund.org/logo.png',
+                order_id: 'order_' + Date.now(), // Generate unique order ID
+                handler: function (response) {
+                    handlePaymentSuccess(response);
+                },
+                prefill: {
+                    name: document.querySelector('input[placeholder*="Name"]').value || 'Anonymous Donor',
+                    email: document.querySelector('input[type="email"]').value,
+                    contact: document.querySelector('input[type="tel"]').value
+                },
+                notes: {
+                    campaign_id: 'EF-2024-001',
+                    donation_message: document.querySelector('textarea')?.value || '',
+                    anonymous: document.getElementById('anonymous').checked
+                },
+                theme: {
+                    color: '#0d9488'
+                },
+                modal: {
+                    ondismiss: function() {
+                        document.getElementById('loadingOverlay').style.display = 'none';
+                        showError('Payment cancelled by user');
+                    }
+                }
+            };
+
+            razorpayInstance = new Razorpay(options);
+            
+            // Hide loading and open Razorpay
+            document.getElementById('loadingOverlay').style.display = 'none';
+            razorpayInstance.open();
+        }
+
+        // Handle payment success
+        function handlePaymentSuccess(response) {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            
+            // Show success message
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'flex';
+            
+            // Store payment details
+            const paymentDetails = {
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature,
+                amount: 2550,
+                campaign_id: 'EF-2024-001',
+                timestamp: new Date().toISOString()
+            };
+            
+            // Store in localStorage for confirmation page
+            localStorage.setItem('lastPayment', JSON.stringify(paymentDetails));
+            
+            // Generate blockchain hash
+            const blockchainHash = generateBlockchainHash(paymentDetails);
+            
+            // Update UI
+            document.getElementById('payButton').disabled = true;
+            document.getElementById('payButtonText').textContent = 'Payment Completed';
+            
+            // Redirect to confirmation page after delay
+            setTimeout(() => {
+                window.location.href = 'donation-confirmation.html';
+            }, 3000);
+        }
+
+        // Generate blockchain hash
+        function generateBlockchainHash(paymentDetails) {
+            const dataString = JSON.stringify(paymentDetails);
+            let hash = 0;
+            for (let i = 0; i < dataString.length; i++) {
+                const char = dataString.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32bit integer
+            }
+            return '0x' + Math.abs(hash).toString(16).padStart(40, '0');
+        }
+
+        // Show error message
+        function showError(message) {
+            const errorMessage = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            errorText.textContent = message;
+            errorMessage.style.display = 'flex';
+            
+            // Hide after 5 seconds
+            setTimeout(() => {
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        // Add event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add input formatting
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.borderColor = '#0d9488';
+                });
+                
+                input.addEventListener('blur', function() {
+                    if (!this.value) {
+                        this.style.borderColor = '#ef4444';
+                    } else {
+                        this.style.borderColor = '#e5e7eb';
+                    }
+                });
+            });
+
+            // Add form validation on input
+            document.querySelectorAll('input[required]').forEach(input => {
+                input.addEventListener('input', function() {
+                    if (this.value) {
+                        this.style.borderColor = '#e5e7eb';
+                    }
+                });
+            });
+
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all fade-in elements
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+
+        // Handle payment method selection
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for payment methods
+            document.querySelectorAll('.payment-method').forEach(method => {
+                method.addEventListener('click', function() {
+                    document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const methodType = this.querySelector('.payment-method-name').textContent.toLowerCase().replace('/', '');
+                    selectPaymentMethod(methodType);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

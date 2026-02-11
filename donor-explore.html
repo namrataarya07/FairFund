@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Campaigns - FairFund</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafb;
+            color: #334155;
+            padding-top: 80px; /* Space for fixed navbar */
+        }
+        
+        /* Global Navigation Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+        }
+        
+        .navbar-logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .navbar-brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: #0d9488;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 1px;
+        }
+        
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .profile-toggle {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .profile-toggle:hover {
+            background: #f1f5f9;
+            color: #0d9488;
+        }
+        
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        /* Explore Page Styles */
+        .explore-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .explore-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .explore-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+        
+        .explore-subtitle {
+            font-size: 1.125rem;
+            color: #64748b;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        /* Search and Filters */
+        .search-filters {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+        
+        .search-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 3rem;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #f8fafb;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+            background: white;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 1.2rem;
+        }
+        
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .filter-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+        }
+        
+        .filter-select {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #0d9488;
+            box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn-primary {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+        }
+        
+        .filter-btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+        
+        .filter-btn-secondary {
+            background: white;
+            color: #64748b;
+            border: 1px solid #d1d5db;
+        }
+        
+        .filter-btn-secondary:hover {
+            background: #f8fafb;
+            border-color: #0d9488;
+            color: #0d9488;
+        }
+        
+        /* Campaigns Grid */
+        .campaigns-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .campaign-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+        
+        .campaign-card:nth-child(1) { animation-delay: 0.1s; }
+        .campaign-card:nth-child(2) { animation-delay: 0.2s; }
+        .campaign-card:nth-child(3) { animation-delay: 0.3s; }
+        .campaign-card:nth-child(4) { animation-delay: 0.4s; }
+        .campaign-card:nth-child(5) { animation-delay: 0.5s; }
+        .campaign-card:nth-child(6) { animation-delay: 0.6s; }
+        
+        .campaign-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .campaign-image {
+            height: 200px;
+            background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #0d9488;
+            position: relative;
+        }
+        
+        .campaign-verified {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+            color: #166534;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .campaign-content {
+            padding: 1.5rem;
+        }
+        
+        .campaign-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .campaign-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+        
+        .campaign-ngo {
+            font-size: 0.875rem;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .ngo-tier {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        
+        .tier-gold {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+        
+        .tier-silver {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #374151;
+        }
+        
+        .tier-bronze {
+            background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);
+            color: #9a3412;
+        }
+        
+        .campaign-description {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .campaign-progress {
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+        
+        .progress-amount {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        
+        .campaign-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 1rem;
+            border-top: 1px solid #f1f5f9;
+        }
+        
+        .campaign-days {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+        
+        .donate-btn {
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .donate-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+        
+        /* Load More */
+        .load-more {
+            text-align: center;
+            margin-top: 2rem;
+        }
+        
+        .load-more-btn {
+            background: white;
+            color: #0d9488;
+            border: 1px solid #0d9488;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .load-more-btn:hover {
+            background: #f0fdfa;
+            transform: translateY(-1px);
+        }
+        
+        @media (max-width: 768px) {
+            .explore-container {
+                padding: 1rem;
+            }
+            
+            .explore-title {
+                font-size: 2rem;
+            }
+            
+            .campaigns-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .navbar-nav {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="navbar-logo">
+                <div class="navbar-logo-text">FF</div>
+            </div>
+            <span class="navbar-brand-name">FairFund</span>
+        </a>
+        
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="donor-dashboard.html" class="nav-link">Dashboard</a>
+                
+            </li>
+            <li class="nav-item">
+                <a href="donor-explore.html" class="nav-link active">Explore</a>
+            </li>
+            <li class="nav-item">
+                <a href="donor-my-donations.html" class="nav-link">My Donations</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+        </ul>
+        
+        <div class="navbar-actions">
+            <div class="profile-dropdown">
+                <button class="profile-toggle" id="profileToggle">
+                    <div class="profile-avatar" id="profileAvatar">D</div>
+                    <span class="profile-name" id="profileName">Donor</span>
+                    <span>▼</span>
+                </button>
+                <div class="profile-menu" id="profileMenu" style="display: none;">
+                    <a href="donor-profile.html" class="profile-menu-item">Profile Settings</a>
+                    <a href="account.html" class="profile-menu-item">Account Settings</a>
+                    <a href="help.html" class="profile-menu-item">Help & Support</a>
+                    <a href="index.html" class="profile-menu-item">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Explore Content -->
+    <div class="explore-container">
+        <div class="explore-header">
+            <h1 class="explore-title">Discover Transparent Campaigns</h1>
+            <p class="explore-subtitle">
+                Support verified NGOs and track every rupee of your donation. 
+                All campaigns are blockchain-verified for complete transparency.
+            </p>
+        </div>
+        
+        <!-- Search and Filters -->
+        <div class="search-filters">
+            <div class="search-container">
+                <div class="search-icon">🔍</div>
+                <input type="text" class="search-input" placeholder="Search campaigns by name, NGO, or cause..." id="searchInput">
+            </div>
+            
+            <div class="filters-grid">
+                <div class="filter-group">
+                    <label class="filter-label">Category</label>
+                    <select class="filter-select" id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="education">Education</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="environment">Environment</option>
+                        <option value="women">Women Empowerment</option>
+                        <option value="children">Children</option>
+                        <option value="disaster">Disaster Relief</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">NGO Tier</label>
+                    <select class="filter-select" id="tierFilter">
+                        <option value="">All Tiers</option>
+                        <option value="gold">Gold Tier</option>
+                        <option value="silver">Silver Tier</option>
+                        <option value="bronze">Bronze Tier</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Progress</label>
+                    <select class="filter-select" id="progressFilter">
+                        <option value="">Any Progress</option>
+                        <option value="funded">Fully Funded</option>
+                        <option value="almost">Almost Funded (80%+)</option>
+                        <option value="halfway">Halfway (50%+)</option>
+                        <option value="new">New Campaigns</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label class="filter-label">Location</label>
+                    <select class="filter-select" id="locationFilter">
+                        <option value="">All Locations</option>
+                        <option value="maharashtra">Maharashtra</option>
+                        <option value="delhi">Delhi</option>
+                        <option value="karnataka">Karnataka</option>
+                        <option value="tamilnadu">Tamil Nadu</option>
+                        <option value="kerala">Kerala</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="filter-buttons">
+                <button class="filter-btn filter-btn-primary" onclick="applyFilters()">Apply Filters</button>
+                <button class="filter-btn filter-btn-secondary" onclick="clearFilters()">Clear All</button>
+            </div>
+        </div>
+        
+        <!-- Campaigns Grid -->
+        <div class="campaigns-grid" id="campaignsGrid">
+            <!-- Campaign 1 -->
+            <div class="campaign-card">
+                <div class="campaign-image">
+                    📚
+                    <div class="campaign-verified">
+                        ✅ Verified
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="campaign-header">
+                        <div>
+                            <h3 class="campaign-title">Education for All 2024</h3>
+                            <div class="campaign-ngo">
+                                <span>🏢</span>
+                                <span>Education For All Foundation</span>
+                                <span class="ngo-tier tier-gold">Gold</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="campaign-description">
+                        Help us provide quality education to 500 underprivileged children in rural Maharashtra. 
+                        Your donation will fund school supplies, teacher salaries, and educational infrastructure.
+                    </p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 85%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="progress-amount">₹8.5L raised</span>
+                            <span>₹10L goal</span>
+                        </div>
+                    </div>
+                    <div class="campaign-footer">
+                        <span class="campaign-days">15 days remaining</span>
+                        <button class="donate-btn" onclick="viewCampaign('education-2024')">Donate Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Campaign 2 -->
+            <div class="campaign-card">
+                <div class="campaign-image">
+                    🏥
+                    <div class="campaign-verified">
+                        ✅ Verified
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="campaign-header">
+                        <div>
+                            <h3 class="campaign-title">Healthcare Initiative for Rural Areas</h3>
+                            <div class="campaign-ngo">
+                                <span>🏢</span>
+                                <span>Health First Foundation</span>
+                                <span class="ngo-tier tier-silver">Silver</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="campaign-description">
+                        Providing essential healthcare services to 1000 villagers in remote areas. 
+                        Setting up mobile clinics and providing free medicines to those in need.
+                    </p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 62%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="progress-amount">₹12.4L raised</span>
+                            <span>₹20L goal</span>
+                        </div>
+                    </div>
+                    <div class="campaign-footer">
+                        <span class="campaign-days">30 days remaining</span>
+                        <button class="donate-btn" onclick="viewCampaign('healthcare-2024')">Donate Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Campaign 3 -->
+            <div class="campaign-card">
+                <div class="campaign-image">
+                    🌱
+                    <div class="campaign-verified">
+                        ✅ Verified
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="campaign-header">
+                        <div>
+                            <h3 class="campaign-title">Clean Water for All</h3>
+                            <div class="campaign-ngo">
+                                <span>🏢</span>
+                                <span>Green Earth Foundation</span>
+                                <span class="ngo-tier tier-gold">Gold</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="campaign-description">
+                        Installing water purification systems in 50 villages across Karnataka. 
+                        Ensuring access to clean drinking water for over 10,000 people.
+                    </p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 95%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="progress-amount">₹9.5L raised</span>
+                            <span>₹10L goal</span>
+                        </div>
+                    </div>
+                    <div class="campaign-footer">
+                        <span class="campaign-days">7 days remaining</span>
+                        <button class="donate-btn" onclick="viewCampaign('clean-water-2024')">Donate Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Campaign 4 -->
+            <div class="campaign-card">
+                <div class="campaign-image">
+                    👩‍💼
+                    <div class="campaign-verified">
+                        ✅ Verified
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="campaign-header">
+                        <div>
+                            <h3 class="campaign-title">Women Empowerment Through Skill Training</h3>
+                            <div class="campaign-ngo">
+                                <span>🏢</span>
+                                <span>Women Rise Foundation</span>
+                                <span class="ngo-tier tier-bronze">Bronze</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="campaign-description">
+                        Training 200 rural women in tailoring, handicrafts, and digital literacy. 
+                        Helping them become financially independent and support their families.
+                    </p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="progress-amount">₹3.5L raised</span>
+                            <span>₹10L goal</span>
+                        </div>
+                    </div>
+                    <div class="campaign-footer">
+                        <span class="campaign-days">45 days remaining</span>
+                        <button class="donate-btn" onclick="viewCampaign('women-empowerment-2024')">Donate Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Campaign 5 -->
+            <div class="campaign-card">
+                <div class="campaign-image">
+                    🍽️
+                    <div class="campaign-verified">
+                        ✅ Verified
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="campaign-header">
+                        <div>
+                            <h3 class="campaign-title">Food Security Program</h3>
+                            <div class="campaign-ngo">
+                                <span>🏢</span>
+                                <span>Zero Hunger Foundation</span>
+                                <span class="ngo-tier tier-gold">Gold</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="campaign-description">
+                        Providing nutritious meals to 1000 homeless individuals in Delhi. 
+                        Setting up community kitchens and distributing food packets daily.
+                    </p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 78%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="progress-amount">₹7.8L raised</span>
+                            <span>₹10L goal</span>
+                        </div>
+                    </div>
+                    <div class="campaign-footer">
+                        <span class="campaign-days">20 days remaining</span>
+                        <button class="donate-btn" onclick="viewCampaign('food-security-2024')">Donate Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Campaign 6 -->
+            <div class="campaign-card">
+                <div class="campaign-image">
+                    🏠
+                    <div class="campaign-verified">
+                        ✅ Verified
+                    </div>
+                </div>
+                <div class="campaign-content">
+                    <div class="campaign-header">
+                        <div>
+                            <h3 class="campaign-title">Disaster Relief - Kerala Floods</h3>
+                            <div class="campaign-ngo">
+                                <span>🏢</span>
+                                <span>Disaster Response Team</span>
+                                <span class="ngo-tier tier-silver">Silver</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="campaign-description">
+                        Emergency relief for flood-affected families in Kerala. 
+                        Providing temporary shelter, food, and essential supplies to 500 families.
+                    </p>
+                    <div class="campaign-progress">
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 88%;"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span class="progress-amount">₹17.6L raised</span>
+                            <span>₹20L goal</span>
+                        </div>
+                    </div>
+                    <div class="campaign-footer">
+                        <span class="campaign-days">10 days remaining</span>
+                        <button class="donate-btn" onclick="viewCampaign('disaster-relief-2024')">Donate Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Load More -->
+        <div class="load-more">
+            <button class="load-more-btn" onclick="loadMoreCampaigns()">Load More Campaigns</button>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get user data from localStorage
+            const userData = JSON.parse(localStorage.getItem('fairfundUser') || '{}');
+            const userRole = localStorage.getItem('fairfundRole') || 'donor';
+            
+            // Update profile
+            const profileAvatar = document.getElementById('profileAvatar');
+            const profileName = document.getElementById('profileName');
+            
+            if (userData.email) {
+                profileName.textContent = userData.email.split('@')[0];
+                profileAvatar.textContent = userRole.charAt(0).toUpperCase();
+            }
+            
+            // Profile dropdown toggle
+            const profileToggle = document.getElementById('profileToggle');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            profileToggle.addEventListener('click', function() {
+                profileMenu.style.display = profileMenu.style.display === 'none' ? 'block' : 'none';
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.profile-dropdown')) {
+                    profileMenu.style.display = 'none';
+                }
+            });
+            
+            // Search functionality
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    filterCampaigns();
+                }, 300);
+            });
+            
+            // Filter change handlers
+            document.getElementById('categoryFilter').addEventListener('change', filterCampaigns);
+            document.getElementById('tierFilter').addEventListener('change', filterCampaigns);
+            document.getElementById('progressFilter').addEventListener('change', filterCampaigns);
+            document.getElementById('locationFilter').addEventListener('change', filterCampaigns);
+            
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe campaign cards
+            document.querySelectorAll('.campaign-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+        
+        function filterCampaigns() {
+            // In a real app, this would filter the campaigns based on selected criteria
+            console.log('Filtering campaigns...');
+            // For demo, we'll just show an alert
+            // alert('Filters applied - this would update the campaign list');
+        }
+        
+        function applyFilters() {
+            filterCampaigns();
+            // Show feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Applied!';
+            button.style.background = '#166534';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+            }, 1500);
+        }
+        
+        function clearFilters() {
+            // Reset all filters
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('tierFilter').value = '';
+            document.getElementById('progressFilter').value = '';
+            document.getElementById('locationFilter').value = '';
+            
+            // Show feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Cleared!';
+            button.style.background = '#64748b';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '';
+            }, 1500);
+        }
+        
+        function viewCampaign(campaignId) {
+            window.location.href = `donation-payment.html?campaign=${campaignId}`;
+        }
+        
+        function loadMoreCampaigns() {
+            // Simulate loading more campaigns
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Loading...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = 'No More Campaigns';
+                // In a real app, you would append new campaigns here
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

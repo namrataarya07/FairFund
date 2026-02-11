@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Component</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafb;
+            padding-top: 80px; /* Space for fixed navbar */
+        }
+        
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+            z-index: 1000;
+            padding: 0 2rem;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar-brand:hover {
+            transform: scale(1.02);
+        }
+        
+        .navbar-logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #5eead4 0%, #2dd4bf 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.75rem;
+            box-shadow: 0 4px 12px rgba(45, 212, 191, 0.3);
+        }
+        
+        .navbar-logo-text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .navbar-brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.01em;
+        }
+        
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: #64748b;
+            font-weight: 500;
+            font-size: 0.875rem;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #0d9488;
+        }
+        
+        .nav-link.active {
+            color: #0d9488;
+        }
+        
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 1px;
+        }
+        
+        .navbar-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .settings-dropdown {
+            position: relative;
+        }
+        
+        .settings-toggle {
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+        
+        .settings-toggle:hover {
+            background: #f1f5f9;
+            color: #0d9488;
+        }
+        
+        .settings-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            min-width: 250px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .settings-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .settings-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 0.875rem;
+        }
+        
+        .settings-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .settings-item:hover {
+            background: #f8fafb;
+        }
+        
+        .settings-item:last-child {
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .settings-label {
+            font-size: 0.875rem;
+            color: #374151;
+            font-weight: 500;
+        }
+        
+        .settings-value {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .toggle-switch.active {
+            background: #0d9488;
+        }
+        
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .toggle-switch.active::after {
+            transform: translateX(20px);
+        }
+        
+        .profile-dropdown {
+            position: relative;
+        }
+        
+        .profile-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #374151;
+        }
+        
+        .profile-toggle:hover {
+            background: #f1f5f9;
+        }
+        
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .profile-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        
+        .profile-menu {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+        }
+        
+        .profile-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .profile-menu-item {
+            display: block;
+            padding: 0.75rem 1.5rem;
+            color: #374151;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+        
+        .profile-menu-item:hover {
+            background: #f8fafb;
+            color: #0d9488;
+        }
+        
+        .profile-menu-item:last-child {
+            border-radius: 0 0 12px 12px;
+            color: #ef4444;
+        }
+        
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .mobile-toggle:hover {
+            background: #f1f5f9;
+            color: #0d9488;
+        }
+        
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+            
+            .navbar-nav {
+                display: none;
+            }
+            
+            .mobile-toggle {
+                display: block;
+            }
+            
+            .navbar-actions {
+                gap: 0.5rem;
+            }
+        }
+        
+        /* Demo content */
+        .demo-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+        
+        .demo-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+        
+        .demo-text {
+            color: #64748b;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="navbar-logo">
+                <div class="navbar-logo-text">FF</div>
+            </div>
+            <span class="navbar-brand-name">FairFund</span>
+        </a>
+        
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="ngo-dashboard.html" class="nav-link">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a href="donor-explore.html" class="nav-link">Explore</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+        </ul>
+        
+        <div class="navbar-actions">
+            <!-- Settings Dropdown -->
+            <div class="settings-dropdown">
+                <button class="settings-toggle" id="settingsToggle">
+                    ⚙️
+                </button>
+                <div class="settings-menu" id="settingsMenu">
+                    <div class="settings-header">Settings</div>
+                    <div class="settings-item">
+                        <span class="settings-label">Dark Mode</span>
+                        <div class="toggle-switch" id="darkModeToggle"></div>
+                    </div>
+                    <div class="settings-item">
+                        <span class="settings-label">Language</span>
+                        <span class="settings-value">English</span>
+                    </div>
+                    <div class="settings-item">
+                        <span class="settings-label">Notifications</span>
+                        <div class="toggle-switch active" id="notificationsToggle"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Profile Dropdown -->
+            <div class="profile-dropdown">
+                <button class="profile-toggle" id="profileToggle">
+                    <div class="profile-avatar" id="profileAvatar">U</div>
+                    <span class="profile-name" id="profileName">User</span>
+                    <span>▼</span>
+                </button>
+                <div class="profile-menu" id="profileMenu">
+                    <a href="profile.html" class="profile-menu-item">Profile Settings</a>
+                    <a href="account.html" class="profile-menu-item">Account Settings</a>
+                    <a href="help.html" class="profile-menu-item">Help & Support</a>
+                    <a href="index.html" class="profile-menu-item">Sign Out</a>
+                </div>
+            </div>
+            
+            <!-- Mobile Toggle -->
+            <button class="mobile-toggle" id="mobileToggle">
+                ☰
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Demo Content -->
+    <div class="demo-content">
+        <div class="demo-section">
+            <h2 class="demo-title">Navigation Component Demo</h2>
+            <p class="demo-text">
+                This is a reusable navigation component for FairFund. It includes:
+            </p>
+            <ul style="margin-top: 1rem; padding-left: 1.5rem; color: #64748b;">
+                <li>Fixed positioning with blur backdrop</li>
+                <li>Settings dropdown with dark mode toggle</li>
+                <li>Profile dropdown with user menu</li>
+                <li>Responsive design for mobile</li>
+                <li>Professional NGO-fintech styling</li>
+            </ul>
+        </div>
+        
+        <div class="demo-section">
+            <h2 class="demo-title">How to Use</h2>
+            <p class="demo-text">
+                Copy the navbar HTML and CSS to your pages. The JavaScript handles:
+            </p>
+            <ul style="margin-top: 1rem; padding-left: 1.5rem; color: #64748b;">
+                <li>Dropdown menu toggles</li>
+                <li>Dark mode switching</li>
+                <li>User profile updates</li>
+                <li>Role-based navigation</li>
+            </ul>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get user role and update navigation
+            const userRole = localStorage.getItem('fairfundRole') || 'donor';
+            const userData = JSON.parse(localStorage.getItem('fairfundUser') || '{}');
+            
+            // Update profile based on role
+            const profileAvatar = document.getElementById('profileAvatar');
+            const profileName = document.getElementById('profileName');
+            
+            if (userData.email) {
+                profileName.textContent = userData.email.split('@')[0];
+                profileAvatar.textContent = userRole.charAt(0).toUpperCase();
+            }
+            
+            // Update navigation links based on role
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.href.includes('dashboard')) {
+                    if (userRole === 'ngo') {
+                        link.href = 'ngo-dashboard.html';
+                    } else {
+                        link.href = 'donor-dashboard.html';
+                    }
+                }
+            });
+            
+            // Settings dropdown
+            const settingsToggle = document.getElementById('settingsToggle');
+            const settingsMenu = document.getElementById('settingsMenu');
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            const notificationsToggle = document.getElementById('notificationsToggle');
+            
+            // Profile dropdown
+            const profileToggle = document.getElementById('profileToggle');
+            const profileMenu = document.getElementById('profileMenu');
+            
+            // Mobile toggle
+            const mobileToggle = document.getElementById('mobileToggle');
+            
+            // Toggle functions
+            function toggleSettings() {
+                settingsMenu.classList.toggle('show');
+                profileMenu.classList.remove('show');
+            }
+            
+            function toggleProfile() {
+                profileMenu.classList.toggle('show');
+                settingsMenu.classList.remove('show');
+            }
+            
+            // Event listeners
+            settingsToggle.addEventListener('click', toggleSettings);
+            profileToggle.addEventListener('click', toggleProfile);
+            
+            // Dark mode toggle
+            darkModeToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                document.body.classList.toggle('dark-mode');
+                localStorage.setItem('darkMode', this.classList.contains('active'));
+            });
+            
+            // Notifications toggle
+            notificationsToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                localStorage.setItem('notifications', this.classList.contains('active'));
+            });
+            
+            // Load saved preferences
+            if (localStorage.getItem('darkMode') === 'true') {
+                darkModeToggle.classList.add('active');
+                document.body.classList.add('dark-mode');
+            }
+            
+            if (localStorage.getItem('notifications') === 'false') {
+                notificationsToggle.classList.remove('active');
+            }
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.settings-dropdown')) {
+                    settingsMenu.classList.remove('show');
+                }
+                if (!e.target.closest('.profile-dropdown')) {
+                    profileMenu.classList.remove('show');
+                }
+            });
+            
+            // Mobile menu toggle (for future implementation)
+            mobileToggle.addEventListener('click', function() {
+                // Implement mobile menu overlay
+                alert('Mobile menu would open here - implement based on your mobile design');
+            });
+            
+            // Active navigation highlighting
+            const currentPath = window.location.pathname.split('/').pop();
+            navLinks.forEach(link => {
+                if (link.href.includes(currentPath)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

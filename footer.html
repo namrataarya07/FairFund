@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Component - FairFund</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8f6f0 0%, #f5f3ed 100%);
+            color: #374151;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Main content area */
+        .main-content {
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+            color: white;
+            padding: 3rem 0 1rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section {
+            padding: 0.5rem;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d9488;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-logo i {
+            color: #14b8a6;
+        }
+
+        .footer-description {
+            color: #9ca3af;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .footer-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #f9fafb;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: #0d9488;
+            transform: translateX(4px);
+        }
+
+        .footer-links i {
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Social Media */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: #0d9488;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: #9ca3af;
+        }
+
+        .contact-item i {
+            color: #0d9488;
+            margin-top: 0.25rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        /* Newsletter */
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            font-size: 0.9rem;
+        }
+
+        .newsletter-input::placeholder {
+            color: #6b7280;
+        }
+
+        .newsletter-input:focus {
+            outline: none;
+            border-color: #0d9488;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .newsletter-btn {
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        /* Footer Bottom */
+        .footer-bottom {
+            border-top: 1px solid #374151;
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .footer-bottom-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-bottom-links a:hover {
+            color: #0d9488;
+        }
+
+        .copyright {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Trust Badges */
+        .trust-badges {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            background: rgba(13, 148, 136, 0.1);
+            color: #14b8a6;
+            padding: 0.5rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .trust-badge i {
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-bottom-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        /* Demo Content */
+        .demo-content {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .demo-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .demo-subtitle {
+            font-size: 1.2rem;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .demo-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .demo-btn-primary {
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            color: white;
+        }
+
+        .demo-btn-secondary {
+            background: white;
+            color: #0d9488;
+            border: 2px solid #0d9488;
+        }
+
+        .demo-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="demo-content fade-in-up">
+                <h1 class="demo-title">FairFund Footer Component</h1>
+                <p class="demo-subtitle">A reusable footer component for all FairFund pages</p>
+                <div class="demo-buttons">
+                    <button class="demo-btn demo-btn-primary" onclick="scrollToFooter()">View Footer</button>
+                    <button class="demo-btn demo-btn-secondary" onclick="copyFooterCode()">Copy Code</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Component -->
+    <footer class="footer" id="footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Brand Section -->
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-hand-holding-heart pulse"></i>
+                        FairFund
+                    </div>
+                    <p class="footer-description">
+                        FairFund is a transparency layer for donations where every rupee donated can be traced, 
+                        verified, and proven. Built on blockchain technology for complete transparency.
+                    </p>
+                    <div class="trust-badges">
+                        <span class="trust-badge">
+                            <i class="fas fa-shield-alt"></i>
+                            Secure
+                        </span>
+                        <span class="trust-badge">
+                            <i class="fas fa-certificate"></i>
+                            Verified
+                        </span>
+                        <span class="trust-badge">
+                            <i class="fas fa-link"></i>
+                            Blockchain
+                        </span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link" title="Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" title="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h3 class="footer-title">Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i>Home</a></li>
+                        <li><a href="donor-explore.html"><i class="fas fa-search"></i>Explore Campaigns</a></li>
+                        <li><a href="login.html"><i class="fas fa-sign-in-alt"></i>Login</a></li>
+                        <li><a href="continue.html"><i class="fas fa-user-plus"></i>Register</a></li>
+                        <li><a href="#"><i class="fas fa-question-circle"></i>How It Works</a></li>
+                        <li><a href="#"><i class="fas fa-chart-line"></i>Impact Stories</a></li>
+                    </ul>
+                </div>
+
+                <!-- For NGOs -->
+                <div class="footer-section">
+                    <h3 class="footer-title">For NGOs</h3>
+                    <ul class="footer-links">
+                        <li><a href="ngo-dashboard.html"><i class="fas fa-tachometer-alt"></i>NGO Dashboard</a></li>
+                        <li><a href="ngo-profile.html"><i class="fas fa-building"></i>Create Campaign</a></li>
+                        <li><a href="#"><i class="fas fa-upload"></i>Upload Proofs</a></li>
+                        <li><a href="#"><i class="fas fa-star"></i>NGO Verification</a></li>
+                        <li><a href="#"><i class="fas fa-graduation-cap"></i>Resources</a></li>
+                        <li><a href="#"><i class="fas fa-hands-helping"></i>Support</a></li>
+                    </ul>
+                </div>
+
+
+
+                <!-- Contact & Support -->
+                <div class="footer-section">
+                    <h3 class="footer-title">Contact & Support</h3>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>support@fairfund.org</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+91 98765 43210</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Mumbai, Maharashtra, India</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Mon-Fri: 9AM-6PM IST</span>
+                        </div>
+                    </div>
+                    <h4 class="footer-title" style="margin-top: 1.5rem; font-size: 1rem;">Stay Updated</h4>
+                    <form class="newsletter-form" onsubmit="subscribeNewsletter(event)">
+                        <input type="email" class="newsletter-input" placeholder="Enter your email" required>
+                        <button type="submit" class="newsletter-btn">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <div class="copyright">
+                    © 2024 FairFund. Built on Proofs, Not Promises.
+                </div>
+                <ul class="footer-bottom-links">
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Accessibility</a></li>
+                    <li><a href="#">Sitemap</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll to footer function
+        function scrollToFooter() {
+            document.getElementById('footer').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        // Copy footer code
+        function copyFooterCode() {
+            const footerHTML = document.getElementById('footer').outerHTML;
+            navigator.clipboard.writeText(footerHTML).then(() => {
+                alert('Footer code copied to clipboard!');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = footerHTML;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Footer code copied to clipboard!');
+            });
+        }
+
+        // Newsletter subscription
+        function subscribeNewsletter(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+            
+            // Simulate subscription
+            const button = event.target.querySelector('button');
+            const originalText = button.textContent;
+            button.textContent = 'Subscribing...';
+            button.disabled = true;
+            
+            setTimeout(() => {
+                button.textContent = 'Subscribed!';
+                button.style.background = '#22c55e';
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.disabled = false;
+                    button.style.background = '';
+                    event.target.reset();
+                }, 2000);
+            }, 1500);
+        }
+
+        // Add smooth hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add pulse animation to logo
+            const logo = document.querySelector('.footer-logo i');
+            setInterval(() => {
+                logo.classList.add('pulse');
+                setTimeout(() => logo.classList.remove('pulse'), 2000);
+            }, 5000);
+
+            // Add click tracking for links
+            document.querySelectorAll('.footer-links a, .footer-bottom-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    if (href && href !== '#') {
+                        window.location.href = href;
+                    } else {
+                        // For demo purposes
+                        alert(`Navigating to: ${this.textContent.trim()}`);
+                    }
+                });
+            });
+
+            // Add social media click handlers
+            document.querySelectorAll('.social-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const platform = this.getAttribute('title');
+                    alert(`Opening FairFund ${platform} page...`);
+                });
+            });
+        });
+
+        // Responsive behavior
+        function handleResize() {
+            const footer = document.getElementById('footer');
+            if (window.innerWidth <= 768) {
+                footer.classList.add('mobile-footer');
+            } else {
+                footer.classList.remove('mobile-footer');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial call
+    </script>
+</body>
+</html>

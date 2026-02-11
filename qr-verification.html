@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campaign Verification - FairFund</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f8f6f0 0%, #f5f3ed 100%);
+            color: #374151;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d9488;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #6b7280;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #0d9488;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 3rem 0;
+            min-height: calc(100vh - 200px);
+        }
+
+        .verification-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .verification-header {
+            margin-bottom: 2rem;
+        }
+
+        .verification-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .verification-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .verification-subtitle {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            margin-bottom: 2rem;
+        }
+
+        .qr-container {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 1.5rem;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .qr-code {
+            width: 160px;
+            height: 160px;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCIgdmlld0JveD0iMCAwIDE2MCAxNjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiBmaWxsPSJ3aGl0ZSIvPgo8cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIzNCIgeT0iMTAiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSI1OCIgeT0iMTAiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSI4MiIgeT0iMTAiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIxMDYiIHk9IjEwIiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IiMwZDk0ODgiLz4KPHJlY3QgeD0iMTMwIiB5PSIxMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjEwIiB5PSIzNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjU4IiB5PSIzNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjgyIiB5PSIzNCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjEzMCIgeT0iMzQiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIxMCIgeT0iNTgiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIzNCIgeT0iNTgiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSI1OCIgeT0iNTgiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSI4MiIgeT0iNTgiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIxMDYiIHk9IjU4IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IiMwZDk0ODgiLz4KPHJlY3QgeD0iMTMwIiB5PSI1OCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjEwIiB5PSI4MiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjM0IiB5PSI4MiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjU4IiB5PSI4MiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjgyIiB5PSI4MiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjEwNiIgeT0iODIiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIxMzAiIHk9IjgyIiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IiMwZDk0ODgiLz4KPHJlY3QgeD0iMTAiIHk9IjEwNiIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjU4IiB5PSIxMDYiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSI4MiIgeT0iMTA2IiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IiMwZDk0ODgiLz4KPHJlY3QgeD0iMTMwIiB5PSIxMDYiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIxMCIgeT0iMTMwIiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IiMwZDk0ODgiLz4KPHJlY3QgeD0iMzQiIHk9IjEzMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+CjxyZWN0IHg9IjU4IiB5PSIxMzAiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSI4MiIgeT0iMTMwIiB3aWR0aD0iMTQiIGhlaWdodD0iMTQiIGZpbGw9IiMwZDk0ODgiLz4KPHJlY3QgeD0iMTA2IiB5PSIxMzAiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgZmlsbD0iIzBkOTQ4OCIvPgo8cmVjdCB4PSIxMzAiIHk9IjEzMCIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBmaWxsPSIjMGQ5NDg4Ii8+Cjwvc3ZnPgo=') no-repeat center;
+            background-size: contain;
+        }
+
+        .qr-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .qr-instruction {
+            color: #374151;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Campaign Info */
+        .campaign-info {
+            background: rgba(13, 148, 136, 0.05);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(13, 148, 136, 0.1);
+        }
+
+        .campaign-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .campaign-ngo {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .campaign-stats {
+            display: flex;
+            justify-content: space-around;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0d9488;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        /* Verification Status */
+        .verification-status {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .status-verified {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+
+        .status-pending {
+            background: rgba(251, 191, 36, 0.1);
+            color: #d97706;
+        }
+
+        .status-rejected {
+            background: rgba(239, 68, 68, 0.1);
+            color: #dc2626;
+        }
+
+        /* Blockchain Proof */
+        .blockchain-proof {
+            background: #f9fafb;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #0d9488;
+        }
+
+        .proof-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .proof-hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #374151;
+            background: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            word-break: break-all;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .proof-hash:hover {
+            border-color: #0d9488;
+            background: rgba(13, 148, 136, 0.02);
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #0d9488, #14b8a6);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0d9488;
+            border: 2px solid #0d9488;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(13, 148, 136, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #1f2937;
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: #9ca3af;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #0d9488;
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            border-left: 4px solid #0d9488;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-content {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast-icon {
+            width: 24px;
+            height: 24px;
+            background: #0d9488;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .verification-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .campaign-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .status-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Loading Spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0d9488;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="#" class="logo">FairFund</a>
+                <ul class="nav-links">
+                    <li><a href="#">Verify Campaign</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Verification Container -->
+            <div class="verification-container fade-in-up">
+                <div class="verification-header">
+                    <div class="verification-icon pulse">✓</div>
+                    <h1 class="verification-title">Campaign Verified</h1>
+                    <p class="verification-subtitle">This campaign has been verified and is authentic</p>
+                </div>
+
+                <!-- QR Code Section -->
+                <div class="qr-section">
+                    <div class="qr-container">
+                        <div class="qr-code" id="qrCode"></div>
+                    </div>
+                    <div class="qr-label">Scan QR Code to Verify</div>
+                    <div class="qr-instruction">Use your phone camera to scan and verify this campaign instantly</div>
+                </div>
+
+                <!-- Campaign Info -->
+                <div class="campaign-info">
+                    <h2 class="campaign-title">Education for All: Digital Learning Initiative</h2>
+                    <p class="campaign-ngo">By Education Foundation • Gold Tier NGO</p>
+                    <div class="campaign-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">₹8.5L</div>
+                            <div class="stat-label">Raised</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">85%</div>
+                            <div class="stat-label">Complete</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">425</div>
+                            <div class="stat-label">Donors</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Verification Status -->
+                <div class="verification-status">
+                    <div class="status-header">
+                        <h3 class="status-title">Verification Status</h3>
+                        <span class="status-badge status-verified">✓ Verified</span>
+                    </div>
+                    <p style="color: #6b7280; margin-bottom: 1.5rem;">
+                        This campaign has passed all verification checks and is approved for donations.
+                    </p>
+                    
+                    <div class="blockchain-proof">
+                        <div class="proof-label">Campaign Hash (Blockchain Record)</div>
+                        <div class="proof-hash" id="campaignHash">
+                            0x7f8a9b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8g9h0i1j2k3l4m5n6o7p8q9r0s1t2
+                        </div>
+                        <button class="copy-btn" onclick="copyHash()">Copy Hash</button>
+                    </div>
+
+                    <div class="blockchain-proof">
+                        <div class="proof-label">NGO Verification Hash</div>
+                        <div class="proof-hash" id="ngoHash">
+                            0x9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7
+                        </div>
+                        <button class="copy-btn" onclick="copyNGOHash()">Copy Hash</button>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <a href="donor-campaign-detail.html" class="action-btn btn-primary">View Campaign</a>
+                    <button class="action-btn btn-secondary" onclick="downloadQR()">Download QR Code</button>
+                    <button class="action-btn btn-secondary" onclick="shareVerification()">Share Verification</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <p>&copy; 2024 FairFund. Built on Proofs, Not Promises.</p>
+                </div>
+                <ul class="footer-links">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Privacy</a></li>
+                    <li><a href="#">Terms</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="toast-content">
+            <div class="toast-icon">✓</div>
+            <span id="toast-message">Hash copied to clipboard!</span>
+        </div>
+    </div>
+
+    <script>
+        // Generate dynamic QR code
+        function generateQRCode() {
+            const qrContainer = document.getElementById('qrCode');
+            const campaignId = 'EF-2024-001';
+            const verificationUrl = `https://fairfund.org/verify/${campaignId}`;
+            
+            // Create a more detailed QR code pattern
+            const qrPattern = `
+                <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="160" height="160" fill="white"/>
+                    <!-- Corner squares -->
+                    <rect x="10" y="10" width="30" height="30" fill="#0d9488"/>
+                    <rect x="120" y="10" width="30" height="30" fill="#0d9488"/>
+                    <rect x="10" y="120" width="30" height="30" fill="#0d9488"/>
+                    
+                    <!-- Inner pattern -->
+                    <rect x="50" y="50" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="70" y="50" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="90" y="50" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="50" y="70" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="90" y="70" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="50" y="90" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="70" y="90" width="10" height="10" fill="#14b8a6"/>
+                    <rect x="90" y="90" width="10" height="10" fill="#14b8a6"/>
+                    
+                    <!-- Random verification pattern -->
+                    <rect x="30" y="30" width="5" height="5" fill="#0d9488"/>
+                    <rect x="40" y="30" width="5" height="5" fill="#0d9488"/>
+                    <rect x="30" y="40" width="5" height="5" fill="#0d9488"/>
+                    <rect x="125" y="30" width="5" height="5" fill="#0d9488"/>
+                    <rect x="135" y="30" width="5" height="5" fill="#0d9488"/>
+                    <rect x="125" y="40" width="5" height="5" fill="#0d9488"/>
+                    <rect x="30" y="125" width="5" height="5" fill="#0d9488"/>
+                    <rect x="40" y="125" width="5" height="5" fill="#0d9488"/>
+                    <rect x="30" y="135" width="5" height="5" fill="#0d9488"/>
+                    
+                    <!-- Center FairFund logo representation -->
+                    <circle cx="80" cy="80" r="15" fill="none" stroke="#0d9488" stroke-width="2"/>
+                    <text x="80" y="85" text-anchor="middle" fill="#0d9488" font-size="10" font-weight="bold">FF</text>
+                </svg>
+            `;
+            
+            qrContainer.innerHTML = qrPattern;
+        }
+
+        // Copy hash to clipboard
+        function copyHash() {
+            const hashElement = document.getElementById('campaignHash');
+            const hash = hashElement.textContent;
+            
+            navigator.clipboard.writeText(hash).then(() => {
+                showToast('Campaign hash copied to clipboard!', 'success');
+            }).catch(() => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = hash;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('Campaign hash copied to clipboard!', 'success');
+            });
+        }
+
+        // Copy NGO hash to clipboard
+        function copyNGOHash() {
+            const hashElement = document.getElementById('ngoHash');
+            const hash = hashElement.textContent;
+            
+            navigator.clipboard.writeText(hash).then(() => {
+                showToast('NGO verification hash copied to clipboard!', 'success');
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = hash;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showToast('NGO verification hash copied to clipboard!', 'success');
+            });
+        }
+
+        // Download QR Code
+        function downloadQR() {
+            const qrContainer = document.getElementById('qrCode');
+            const svgData = new XMLSerializer().serializeToString(qrContainer.querySelector('svg'));
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+            
+            canvas.width = 400;
+            canvas.height = 400;
+            
+            img.onload = function() {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                
+                const link = document.createElement('a');
+                link.download = 'fairfund-campaign-verification.png';
+                link.href = canvas.toDataURL();
+                link.click();
+                
+                showToast('QR Code downloaded successfully!', 'success');
+            };
+            
+            img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
+        }
+
+        // Share verification
+        function shareVerification() {
+            const shareData = {
+                title: 'FairFund Campaign Verification',
+                text: 'Education for All: Digital Learning Initiative - Verified Campaign by Education Foundation',
+                url: window.location.href
+            };
+
+            if (navigator.share) {
+                navigator.share(shareData).then(() => {
+                    showToast('Verification shared successfully!', 'success');
+                }).catch(() => {
+                    // Fallback to copying URL
+                    navigator.clipboard.writeText(window.location.href);
+                    showToast('Verification link copied to clipboard!', 'success');
+                });
+            } else {
+                // Fallback for browsers without native sharing
+                navigator.clipboard.writeText(window.location.href);
+                showToast('Verification link copied to clipboard!', 'success');
+            }
+        }
+
+        // Show toast notification
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            
+            // Update toast appearance based on type
+            if (type === 'error') {
+                toast.style.borderLeftColor = '#ef4444';
+                toast.querySelector('.toast-icon').style.background = '#ef4444';
+                toast.querySelector('.toast-icon').textContent = '✗';
+            } else {
+                toast.style.borderLeftColor = '#0d9488';
+                toast.querySelector('.toast-icon').style.background = '#0d9488';
+                toast.querySelector('.toast-icon').textContent = '✓';
+            }
+            
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Simulate blockchain verification
+        function simulateBlockchainVerification() {
+            const statusBadge = document.querySelector('.status-badge');
+            const statusTitle = document.querySelector('.status-title');
+            
+            // Show loading state
+            statusBadge.innerHTML = '<span class="loading"></span> Verifying';
+            statusBadge.className = 'status-badge status-pending';
+            
+            setTimeout(() => {
+                // Simulate successful verification
+                statusBadge.innerHTML = '✓ Verified';
+                statusBadge.className = 'status-badge status-verified';
+                statusTitle.textContent = 'Verification Complete';
+                showToast('Blockchain verification successful!', 'success');
+                
+                // Add verification animation
+                document.querySelector('.verification-icon').classList.add('pulse');
+            }, 2000);
+        }
+
+        // Add click effects to proof hashes
+        document.addEventListener('DOMContentLoaded', function() {
+            generateQRCode();
+            
+            // Add click effects to proof hashes
+            document.querySelectorAll('.proof-hash').forEach(hash => {
+                hash.addEventListener('click', function() {
+                    const hashText = this.textContent;
+                    navigator.clipboard.writeText(hashText).then(() => {
+                        showToast('Hash copied to clipboard!', 'success');
+                    });
+                });
+            });
+            
+            // Simulate blockchain verification on page load
+            setTimeout(simulateBlockchainVerification, 1000);
+            
+            // Add scroll animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all fade-in elements
+            document.querySelectorAll('.fade-in-up').forEach(el => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(30px)';
+                el.style.transition = 'all 0.6s ease-out';
+                observer.observe(el);
+            });
+        });
+
+        // Add hover effects
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.proof-hash').forEach(hash => {
+                hash.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.02)';
+                });
+                
+                hash.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

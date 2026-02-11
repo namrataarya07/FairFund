@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Details | FairFund</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:#f8fafb;color:#334155;padding-top:80px}
+        .navbar{position:fixed;top:0;left:0;right:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,.08);z-index:1000;padding:0 2rem;height:80px;display:flex;align-items:center;justify-content:space-between}
+        .navbar-brand{display:flex;align-items:center;text-decoration:none}
+        .navbar-logo{width:40px;height:40px;background:linear-gradient(135deg,#5eead4 0%,#2dd4bf 100%);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-right:.75rem;box-shadow:0 4px 12px rgba(45,212,191,.3)}
+        .navbar-logo-text{font-size:1.1rem;font-weight:700;color:#fff}
+        .navbar-brand-name{font-size:1.25rem;font-weight:700;color:#0f172a}
+        .navbar-nav{display:flex;align-items:center;gap:2rem;list-style:none}
+        .nav-link{text-decoration:none;color:#64748b;font-weight:500;font-size:.875rem;position:relative}
+        .nav-link:hover,.nav-link.active{color:#0d9488}
+        .container{max-width:1200px;margin:0 auto;padding:2rem}
+        .header{background:#fff;border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:1.5rem}
+        .title{font-size:1.75rem;font-weight:700;color:#0f172a;margin-bottom:.25rem}
+        .muted{color:#64748b}
+        .summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
+        .pill{background:#f8fafb;border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
+        .stat{font-size:1.25rem;font-weight:700;color:#0f172a}
+        .hash{font-family:monospace;background:#f1f5f9;padding:.25rem .5rem;border-radius:6px;color:#64748b}
+        .section{background:#fff;border-radius:16px;padding:2rem;box-shadow:0 4px 20px rgba(0,0,0,.08);margin-bottom:1.5rem}
+        .section-title{font-size:1.25rem;font-weight:600;color:#0f172a;margin-bottom:1rem}
+        .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
+        .card{border:1px solid #e5e7eb;border-radius:12px;padding:1rem}
+        .progress-bar{height:10px;background:#e5e7eb;border-radius:6px;overflow:hidden;margin:.5rem 0}
+        .progress-fill{height:100%;background:linear-gradient(135deg,#0d9488 0%,#0f766e 100%)}
+        .badge{display:inline-block;padding:.25rem .5rem;border-radius:6px;font-size:.75rem;font-weight:600}
+        .verified{background:#dcfce7;color:#166534}
+        .pending{background:#fef3c7;color:#92400e}
+        .row{display:flex;align-items:center;justify-content:space-between;margin:.5rem 0}
+        .btn{background:linear-gradient(135deg,#0d9488 0%,#0f766e 100%);color:#fff;border:none;padding:.6rem 1rem;border-radius:10px;font-weight:600;cursor:pointer}
+        .btn-secondary{background:#fff;color:#0d9488;border:1px solid #0d9488}
+        @media (max-width:768px){.container{padding:1rem}}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="navbar-logo"><div class="navbar-logo-text">FF</div></div>
+            <span class="navbar-brand-name">FairFund</span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="donor-dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="donor-explore.html" class="nav-link">Explore</a></li>
+            <li><a href="donor-my-donations.html" class="nav-link">My Donations</a></li>
+            <li><a href="about.html" class="nav-link">About</a></li>
+        </ul>
+        <div></div>
+    </nav>
+    <div class="container">
+        <div class="section">
+            <div class="title" id="ngoName">NGO Name</div>
+            <div class="muted" id="campaignName">Campaign</div>
+            <div class="summary">
+                <div class="pill"><div class="muted">Amount Donated</div><div class="stat" id="donationAmount">₹0</div></div>
+                <div class="pill"><div class="muted">Date</div><div class="stat" id="donationDate">--</div></div>
+                <div class="pill"><div class="muted">Status</div><div class="stat" id="donationStatus">Pending</div></div>
+                <div class="pill"><div class="muted">Transaction Hash</div><div class="hash" id="donationHash">0x...</div></div>
+            </div>
+            <div style="margin-top:1rem;display:flex;gap:.75rem">
+                <a id="qrLink" class="btn" href="#">View Public Verification</a>
+                <button id="copyHash" class="btn btn-secondary">Copy Hash</button>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title">Fund Utilization Breakdown</div>
+            <div class="grid" id="utilGrid"></div>
+        </div>
+        <div class="section">
+            <div class="section-title">Proof Timeline</div>
+            <div id="timeline"></div>
+        </div>
+    </div>
+    <script>
+        const data={
+            d_1001:{ngo:'Education For All Foundation',campaign:'Education for All 2024',amount:5000,date:'2026-02-01T10:20:00',status:'verified',hash:'0x9f8e7d...6c5b4a',campaignId:'education-2024',util:[
+                {name:'School Supplies',amt:2500,pct:50,hash:'0x7a8b9c...d2e3f4',status:'verified'},
+                {name:'Teacher Salaries',amt:1500,pct:30,hash:'0x2e1d2c...3b4a5d',status:'verified'},
+                {name:'Infrastructure',amt:1000,pct:20,hash:'Pending',status:'pending'}
+            ],timeline:[
+                {type:'Donation',text:'Donation received',amt:'+₹5,000',date:'2026-02-01 10:20',hash:'0x9f8e7d...6c5b4a'},
+                {type:'Withdrawal',text:'School supplies purchased',amt:'-₹2,500',date:'2026-02-03 14:10',hash:'0x7a8b9c...d2e3f4'},
+                {type:'Withdrawal',text:'Teacher salaries disbursed',amt:'-₹1,500',date:'2026-02-07 11:00',hash:'0x2e1d2c...3b4a5d'}
+            ]},
+            d_1002:{ngo:'Community Health Trust',campaign:'Healthcare Initiative',amount:25000,date:'2026-01-25T17:45:00',status:'pending',hash:'0x3a2b1c...4d5e6f',campaignId:'healthcare-2024',util:[
+                {name:'Medical Supplies',amt:12000,pct:48,hash:'Pending',status:'pending'},
+                {name:'Camp Logistics',amt:8000,pct:32,hash:'Pending',status:'pending'},
+                {name:'Volunteer Stipends',amt:5000,pct:20,hash:'Pending',status:'pending'}
+            ],timeline:[
+                {type:'Donation',text:'Donation received',amt:'+₹25,000',date:'2026-01-25 17:45',hash:'0x3a2b1c...4d5e6f'}
+            ]},
+            d_1003:{ngo:'WomenRise Org',campaign:'Women Empowerment',amount:10000,date:'2026-01-10T09:05:00',status:'verified',hash:'0x8f7e6d...5c4b3a',campaignId:'women-empowerment',util:[
+                {name:'Skill Training',amt:6000,pct:60,hash:'0x1b2c3d...4e5f6a',status:'verified'},
+                {name:'Micro-grants',amt:3000,pct:30,hash:'0x5c4b3a...7d8e9f',status:'verified'},
+                {name:'Admin & Ops',amt:1000,pct:10,hash:'Pending',status:'pending'}
+            ],timeline:[
+                {type:'Donation',text:'Donation received',amt:'+₹10,000',date:'2026-01-10 09:05',hash:'0x8f7e6d...5c4b3a'},
+                {type:'Withdrawal',text:'Training materials',amt:'-₹6,000',date:'2026-01-12 15:20',hash:'0x1b2c3d...4e5f6a'},
+                {type:'Withdrawal',text:'Micro-grants issued',amt:'-₹3,000',date:'2026-01-20 12:00',hash:'0x5c4b3a...7d8e9f'}
+            ]}
+        };
+        const params=new URLSearchParams(window.location.search);
+        const id=params.get('id');
+        const d=data[id]||data['d_1001'];
+        document.getElementById('ngoName').textContent=d.ngo;
+        document.getElementById('campaignName').textContent=d.campaign;
+        document.getElementById('donationAmount').textContent='₹'+d.amount.toLocaleString();
+        document.getElementById('donationDate').textContent=new Date(d.date).toLocaleString();
+        document.getElementById('donationStatus').textContent=d.status.charAt(0).toUpperCase()+d.status.slice(1);
+        document.getElementById('donationHash').textContent=d.hash;
+        document.getElementById('qrLink').href=`qr-verification.html?campaign=${d.campaignId}`;
+        document.getElementById('copyHash').addEventListener('click',function(){navigator.clipboard.writeText(d.hash);});
+        const utilGrid=document.getElementById('utilGrid');
+        d.util.forEach(u=>{
+            const card=document.createElement('div');
+            card.className='card';
+            card.innerHTML=`
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div style="font-weight:600;color:#0f172a">${u.name}</div>
+                    <span class="badge ${u.status==='verified'?'verified':'pending'}">${u.status.charAt(0).toUpperCase()+u.status.slice(1)}</span>
+                </div>
+                <div class="row"><span class="muted">Amount</span><span style="font-weight:600">₹${u.amt.toLocaleString()}</span></div>
+                <div class="progress-bar"><div class="progress-fill" style="width:${u.pct}%"></div></div>
+                <div class="row"><span class="muted">Proof Hash</span><span class="hash">${u.hash}</span></div>
+            `;
+            utilGrid.appendChild(card);
+        });
+        const timeline=document.getElementById('timeline');
+        d.timeline.forEach(t=>{
+            const card=document.createElement('div');
+            card.className='card';
+            card.innerHTML=`
+                <div style="display:flex;align-items:center;justify-content:space-between">
+                    <div style="font-weight:600;color:#0f172a">${t.type}</div>
+                    <span class="muted">${t.date}</span>
+                </div>
+                <div class="row"><span>${t.text}</span><span style="font-weight:600">${t.amt}</span></div>
+                <div class="row"><span class="muted">Hash</span><span class="hash">${t.hash}</span></div>
+            `;
+            timeline.appendChild(card);
+        });
+    </script>
+</body>
+</html>

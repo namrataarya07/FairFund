@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About FairFund | Controlfreaks Team</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: #f8fafb; color: #334155; padding-top: 80px; }
+        .navbar { position: fixed; top: 0; left: 0; right: 0; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.08); z-index: 1000; padding: 0 2rem; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+        .navbar-brand { display: flex; align-items: center; text-decoration: none; }
+        .navbar-logo { width: 40px; height: 40px; background: linear-gradient(135deg,#5eead4 0%,#2dd4bf 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-right: .75rem; box-shadow: 0 4px 12px rgba(45,212,191,.3); }
+        .navbar-logo-text { font-size: 1.1rem; font-weight: 700; color: #fff; }
+        .navbar-brand-name { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+        .navbar-nav { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-link { text-decoration: none; color: #64748b; font-weight: 500; font-size: .875rem; position: relative; }
+        .nav-link:hover, .nav-link.active { color: #0d9488; }
+        .nav-link.active::after { content: ''; position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background: linear-gradient(135deg,#0d9488 0%,#0f766e 100%); border-radius: 1px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+        .hero { background: white; border-radius: 16px; padding: 2.5rem; box-shadow: 0 4px 20px rgba(0,0,0,.08); margin-bottom: 2rem; }
+        .hero-top { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .logo { width: 60px; height: 60px; background: linear-gradient(135deg,#5eead4 0%,#2dd4bf 100%); border-radius: 16px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; box-shadow: 0 10px 24px rgba(45,212,191,.3); }
+        .title { font-size: 2rem; font-weight: 700; color: #0f172a; }
+        .tagline { color: #64748b; margin-bottom: .5rem; }
+        .values { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 1rem; margin-top: 1rem; }
+        .value-card { background: #f8fafb; border: 1px solid #e5e7eb; border-radius: 12px; padding: 1rem; }
+        .value-title { font-weight: 600; color: #0f172a; margin-bottom: .25rem; }
+        .team-section { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,.08); margin-bottom: 2rem; }
+        .section-title { font-size: 1.5rem; font-weight: 600; color: #0f172a; margin-bottom: 1rem; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+        .member { background: linear-gradient(135deg,#ffffff 0%,#fbfbfb 100%); border: 1px solid #e5e7eb; border-radius: 16px; padding: 1.5rem; text-align: center; transition: .3s; }
+        .member:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,.08); }
+        .avatar { width: 60px; height: 60px; border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; background: linear-gradient(135deg,#0d9488 0%,#0f766e 100%); }
+        .name { font-weight: 600; color: #0f172a; }
+        .role { font-size: .875rem; color: #64748b; }
+        .impact { background: white; border-radius: 16px; padding: 2rem; box-shadow: 0 4px 20px rgba(0,0,0,.08); }
+        .impact-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 1rem; }
+        .impact-card { background: linear-gradient(135deg,#f0fdfa 0%,#ccfbf1 100%); border-radius: 12px; padding: 1rem; color: #0f172a; border: 1px solid rgba(13,148,136,.2); display: flex; align-items: center; gap: .75rem; }
+        .impact-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg,#e0f2fe 0%,#bae6fd 100%); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: #0c4a6e; }
+        .impact-content { display: flex; flex-direction: column; }
+        .stat { font-size: 1.25rem; font-weight: 700; color: #0f172a; }
+        .stat-sub { font-size: .875rem; color: #64748b; }
+        .cta { margin-top: 2rem; display: flex; gap: 1rem; }
+        .btn { background: linear-gradient(135deg,#0d9488 0%,#0f766e 100%); color: #fff; border: none; padding: .75rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; }
+        .btn-secondary { background: white; color: #0d9488; border: 1px solid #0d9488; }
+        @media (max-width:768px){ .navbar { padding: 0 1rem; } .navbar-nav { display: none; } .container { padding: 1rem; } }
+    </style>
+    </head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="navbar-brand">
+            <div class="navbar-logo"><div class="navbar-logo-text">FF</div></div>
+            <span class="navbar-brand-name">FairFund</span>
+        </a>
+        <ul class="navbar-nav">
+            <li><a href="ngo-dashboard.html" class="nav-link">Dashboard</a></li>
+            <li><a href="ngo-campaigns.html" class="nav-link">Campaigns</a></li>
+            <li><a href="about.html" class="nav-link active">About</a></li>
+        </ul>
+        <div></div>
+    </nav>
+    <div class="container">
+        <div class="hero">
+            <div class="hero-top">
+                <div class="logo">FF</div>
+                <div>
+                    <div class="title">FairFund</div>
+                    <div class="tagline">Built on proofs, not promises</div>
+                </div>
+            </div>
+            <div class="values">
+                <div class="value-card"><div class="value-title">Transparency First</div><div>Every rupee traceable, verifiable, and accountable.</div></div>
+                <div class="value-card"><div class="value-title">Ethical Tech</div><div>Blockchain for proofs only, not hype.</div></div>
+                <div class="value-card"><div class="value-title">Human-Centered</div><div>Trust through clarity and supportive UX.</div></div>
+            </div>
+            <div class="cta">
+                <a href="donor-explore.html" class="btn">Explore Campaigns</a>
+                <a href="continue.html" class="btn btn-secondary">Get Started</a>
+            </div>
+        </div>
+        <div class="team-section">
+            <div class="section-title">Controlfreaks Team</div>
+            <div class="team-grid">
+                <div class="member"><div class="avatar">N</div><div class="name">Namrata</div></div>
+                <div class="member"><div class="avatar">M</div><div class="name">Manshi</div></div>
+                <div class="member"><div class="avatar">M</div><div class="name">Manvi</div></div>
+                <div class="member"><div class="avatar">K</div><div class="name">Kanika</div></div>
+                <div class="member"><div class="avatar">N</div><div class="name">Nandini</div></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const role = localStorage.getItem('fairfundRole') || 'donor';
+            const navItems = document.querySelectorAll('.navbar-nav .nav-link');
+            navItems.forEach(link => {
+                if (link.textContent.trim().toLowerCase() === 'dashboard') {
+                    link.href = role === 'ngo' ? 'ngo-dashboard.html' : 'donor-dashboard.html';
+                }
+                if (link.textContent.trim().toLowerCase() === 'campaigns') {
+                    if (role === 'ngo') {
+                        link.href = 'ngo-campaigns.html';
+                        link.textContent = 'Campaigns';
+                    } else {
+                        link.href = 'donor-explore.html';
+                        link.textContent = 'Explore';
+                    }
+                }
+            });
+            if (role === 'donor') {
+                const nav = document.querySelector('.navbar-nav');
+                const hasMyDonations = Array.from(navItems).some(l => l.textContent.trim().toLowerCase() === 'my donations');
+                if (!hasMyDonations && nav) {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = 'donor-my-donations.html';
+                    a.className = 'nav-link';
+                    a.textContent = 'My Donations';
+                    li.appendChild(a);
+                    const aboutLink = Array.from(nav.querySelectorAll('.nav-link')).find(l => l.textContent.trim().toLowerCase() === 'about');
+                    if (aboutLink && aboutLink.parentElement) {
+                        nav.insertBefore(li, aboutLink.parentElement);
+                    } else {
+                        nav.appendChild(li);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -22,8 +22,6 @@ Donors cannot verify how their funds are actually used
 
 NGOs receive lump-sum donations without structured accountability
 
-Proof is often uploaded post-spending and is unverifiable
-
 Fraud cases damage trust across the entire ecosystem
 
 Trust is demanded — but rarely proven.
@@ -57,15 +55,14 @@ It makes fraud visible, risky, and unsustainable.
 
 **⭐ Key Innovation**
 
-1️⃣ Proof-Gated Withdrawals
-
-Bills do not unlock money — they request withdrawal.
+1️⃣ Bills
+bills are used as proof of purchase
 
 2️⃣ Layered Verification Stack
 
 Time-stamp validation
 
-Geo-tagged images
+Geo-tagged images of products
 
 Metadata consistency checks
 

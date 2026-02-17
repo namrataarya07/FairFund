@@ -404,6 +404,49 @@
             transform: none;
         }
 
+        /* QR Modal */
+        .qr-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1100;
+            backdrop-filter: blur(2px);
+        }
+        .qr-card {
+            width: 360px;
+            max-width: 92vw;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.16);
+            padding: 1.25rem;
+            text-align: center;
+            animation: fadeInUp 0.35s ease-out;
+        }
+        .qr-title { font-weight: 700; color: #0f172a; margin-bottom: .25rem; }
+        .qr-sub { color: #64748b; font-size: .9rem; margin-bottom: .75rem; }
+        .qr-box {
+            background: #f8fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: .75rem;
+            margin: .75rem 0 1rem;
+        }
+        .qr-actions { display: grid; gap: .5rem; margin-top: .5rem; }
+        .qr-btn {
+            border: none;
+            border-radius: 10px;
+            padding: .75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .15s ease, box-shadow .2s ease;
+        }
+        .qr-btn-primary { background: linear-gradient(135deg,#0d9488,#14b8a6); color: #fff; }
+        .qr-btn-secondary { background: #fff; color: #0d9488; border: 1px solid #0d9488; }
+        .qr-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(13,148,136,.25); }
+
         /* Terms */
         .terms-checkbox {
             display: flex;
@@ -796,6 +839,24 @@
         </div>
     </div>
 
+    <!-- QR Payment Modal -->
+    <div id="qrOverlay" class="qr-overlay">
+        <div class="qr-card">
+            <div class="qr-title">Scan to Pay via UPI</div>
+            <div class="qr-sub">Secure payment for <span id="qrCampaign">Education for All</span></div>
+            <div class="qr-box">
+                <img id="qrImage" alt="UPI QR" style="width: 220px; height: 220px; image-rendering: pixelated;" />
+            </div>
+            <div style="font-weight:700;color:#0d9488;margin-bottom:.5rem" id="qrAmount">₹2,550</div>
+            <div class="qr-actions">
+                <button class="qr-btn qr-btn-primary" id="qrPaidBtn">I've Paid</button>
+                <button class="qr-btn qr-btn-secondary" id="qrRzpBtn">Pay with Razorpay Instead</button>
+                <button class="qr-btn" style="background:#f1f5f9;color:#374151" id="qrCloseBtn">Close</button>
+            </div>
+            <div class="qr-sub" style="margin-top:.75rem">Supports any UPI app: GPay, PhonePe, Paytm, BHIM</div>
+        </div>
+    </div>
+
     <script>
         // Global variables
         let selectedPaymentMethod = 'card';
@@ -863,13 +924,8 @@
                 return;
             }
 
-            // Show loading
-            document.getElementById('loadingOverlay').style.display = 'flex';
-            
-            // Simulate payment processing
-            setTimeout(() => {
-                initializeRazorpay();
-            }, 2000);
+            // Show QR first (prototype-friendly). Users can choose Razorpay inside modal.
+            showQRModal();
         }
 
         // Validate form
@@ -945,8 +1001,9 @@
 
             razorpayInstance = new Razorpay(options);
             
-            // Hide loading and open Razorpay
+            // Hide overlays and open Razorpay
             document.getElementById('loadingOverlay').style.display = 'none';
+            hideQRModal();
             razorpayInstance.open();
         }
 
@@ -1058,6 +1115,23 @@
                 el.style.transition = 'all 0.6s ease-out';
                 observer.observe(el);
             });
+
+            // QR modal buttons
+            document.getElementById('qrPaidBtn').addEventListener('click', function(){
+                // Mock success after QR scan
+                hideQRModal();
+                handlePaymentSuccess({
+                    razorpay_payment_id: 'qr_' + Date.now(),
+                    razorpay_order_id: 'order_' + Date.now(),
+                    razorpay_signature: 'mock_signature'
+                });
+            });
+            document.getElementById('qrRzpBtn').addEventListener('click', function(){
+                // Fallback to Razorpay checkout
+                document.getElementById('loadingOverlay').style.display = 'flex';
+                setTimeout(initializeRazorpay, 600);
+            });
+            document.getElementById('qrCloseBtn').addEventListener('click', hideQRModal);
         });
 
         // Handle payment method selection
@@ -1073,6 +1147,26 @@
                 });
             });
         });
+
+        // Build UPI intent and show QR (uses public QR image API for demo)
+        function showQRModal(){
+            const overlay = document.getElementById('qrOverlay');
+            const amountText = document.getElementById('payButtonText').textContent || '₹2,550';
+            const amountMatch = amountText.match(/₹([0-9,]+)/);
+            const amount = amountMatch ? amountMatch[1].replace(/,/g,'') : '2550';
+            const pa = 'educationfoundation@okicici';
+            const pn = 'Education Foundation';
+            const tn = encodeURIComponent('Donation EF-2024-001 via FairFund');
+            const upi = `upi://pay?pa=${pa}&pn=${encodeURIComponent(pn)}&am=${amount}&cu=INR&tn=${tn}`;
+            const img = document.getElementById('qrImage');
+            const api = 'https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=' + encodeURIComponent(upi);
+            img.src = api;
+            document.getElementById('qrAmount').textContent = '₹' + Number(amount).toLocaleString('en-IN');
+            overlay.style.display = 'flex';
+        }
+        function hideQRModal(){
+            document.getElementById('qrOverlay').style.display = 'none';
+        }
     </script>
 </body>
 </html>

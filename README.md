@@ -56,6 +56,7 @@ It makes fraud visible, risky, and unsustainable.
 **⭐ Key Innovation**
 
 1️⃣ Bills
+
 bills are used as proof of purchase
 
 2️⃣ Layered Verification Stack
